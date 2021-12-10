@@ -42,3 +42,6 @@ nbproject/*
 *.code-workspace
 # Sass preprocessor
 .sass-cache/
+
+#npm for tailwind
+node_modules/
