@@ -16,7 +16,7 @@ class UsersTableTest extends TestCase
      *
      * @var \App\Model\Table\UsersTable
      */
-    protected $Users;
+    protected $UsersTable;
 
     /**
      * Fixtures
@@ -38,7 +38,7 @@ class UsersTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Users') ? [] : ['className' => UsersTable::class];
-        $this->Users = $this->getTableLocator()->get('Users', $config);
+        $this->UsersTable = $this->getTableLocator()->get('Users', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class UsersTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Users);
+        unset($this->UsersTable);
 
         parent::tearDown();
     }

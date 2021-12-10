@@ -16,7 +16,7 @@ class UserTypesTableTest extends TestCase
      *
      * @var \App\Model\Table\UserTypesTable
      */
-    protected $UserTypes;
+    protected $UserTypesTable;
 
     /**
      * Fixtures
@@ -37,7 +37,7 @@ class UserTypesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('UserTypes') ? [] : ['className' => UserTypesTable::class];
-        $this->UserTypes = $this->getTableLocator()->get('UserTypes', $config);
+        $this->UserTypesTable = $this->getTableLocator()->get('UserTypes', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class UserTypesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->UserTypes);
+        unset($this->UserTypesTable);
 
         parent::tearDown();
     }
