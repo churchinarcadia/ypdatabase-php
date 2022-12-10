@@ -45,3 +45,6 @@ nbproject/*
 
 #npm for tailwind
 node_modules/
+
+#Docker-related
+.env
