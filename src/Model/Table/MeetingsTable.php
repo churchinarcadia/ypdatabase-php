@@ -51,6 +51,9 @@ class MeetingsTable extends Table
         $this->belongsTo('MeetingTypes', [
             'foreignKey' => 'meeting_type_id',
         ]);
+        $this->belongsTo('MeetingLocations', [
+            'foreignKey' => 'meeting_location_id',
+        ]);
         $this->hasMany('MeetingPeople', [
             'foreignKey' => 'meeting_id',
         ]);
@@ -102,6 +105,7 @@ class MeetingsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('meeting_type_id', 'MeetingTypes'), ['errorField' => 'meeting_type_id']);
+        $rules->add($rules->existsIn('meeting_location_id', 'MeetingLocations'), ['errorField' => 'meeting_location_id']);
 
         return $rules;
     }

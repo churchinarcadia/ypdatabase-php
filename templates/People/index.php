@@ -13,6 +13,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('first_name') ?></th>
+                    <th><?= $this->Paginator->sort('middle_name') ?></th>
                     <th><?= $this->Paginator->sort('last_name') ?></th>
                     <th><?= $this->Paginator->sort('gender') ?></th>
                     <th><?= $this->Paginator->sort('mobile_phone') ?></th>
@@ -20,7 +21,7 @@
                     <th><?= $this->Paginator->sort('email') ?></th>
                     <th><?= $this->Paginator->sort('hs_grad_year') ?></th>
                     <th><?= $this->Paginator->sort('home_phone') ?></th>
-                    <th><?= $this->Paginator->sort('home_address') ?></th>
+                    <th><?= $this->Paginator->sort('address_id') ?></th>
                     <th><?= $this->Paginator->sort('baptized') ?></th>
                     <th><?= $this->Paginator->sort('active') ?></th>
                     <th><?= $this->Paginator->sort('district') ?></th>
@@ -38,6 +39,7 @@
                 <tr>
                     <td><?= $this->Number->format($person->id) ?></td>
                     <td><?= h($person->first_name) ?></td>
+                    <td><?= h($person->middle_name) ?></td>
                     <td><?= h($person->last_name) ?></td>
                     <td><?= h($person->gender) ?></td>
                     <td><?= h($person->mobile_phone) ?></td>
@@ -45,7 +47,7 @@
                     <td><?= h($person->email) ?></td>
                     <td><?= $this->Number->format($person->hs_grad_year) ?></td>
                     <td><?= h($person->home_phone) ?></td>
-                    <td><?= h($person->home_address) ?></td>
+                    <td><?= $this->Number->format($person->address_id) ?></td>
                     <td><?= h($person->baptized) ?></td>
                     <td><?= h($person->active) ?></td>
                     <td><?= $this->Number->format($person->district) ?></td>

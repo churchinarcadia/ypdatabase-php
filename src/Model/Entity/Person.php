@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $first_name
+ * @property string|null $middle_name
  * @property string|null $last_name
  * @property string|null $gender
  * @property string|null $mobile_phone
@@ -17,7 +18,7 @@ use Cake\ORM\Entity;
  * @property string|null $email
  * @property int|null $hs_grad_year
  * @property string|null $home_phone
- * @property string|null $home_address
+ * @property int|null $address_id
  * @property bool|null $baptized
  * @property bool|null $active
  * @property string|null $notes
@@ -46,6 +47,7 @@ class Person extends Entity
      */
     protected $_accessible = [
         'first_name' => true,
+        'middle_name' => true,
         'last_name' => true,
         'gender' => true,
         'mobile_phone' => true,
@@ -53,7 +55,7 @@ class Person extends Entity
         'email' => true,
         'hs_grad_year' => true,
         'home_phone' => true,
-        'home_address' => true,
+        'address_id' => true,
         'baptized' => true,
         'active' => true,
         'notes' => true,

@@ -27,7 +27,7 @@
                     echo $this->Form->control('person_id', ['options' => $people, 'empty' => true]);
                     echo $this->Form->control('email');
                     echo $this->Form->control('password');
-                    echo $this->Form->control('active');
+                    echo $this->Form->control('status');
                     echo $this->Form->control('user_type_id', ['options' => $userTypes, 'empty' => true]);
                     echo $this->Form->control('creator');
                     echo $this->Form->control('modifier');

@@ -16,6 +16,7 @@
                     <th><?= $this->Paginator->sort('start_time') ?></th>
                     <th><?= $this->Paginator->sort('end_time') ?></th>
                     <th><?= $this->Paginator->sort('meeting_type_id') ?></th>
+                    <th><?= $this->Paginator->sort('meeting_location_id') ?></th>
                     <th><?= $this->Paginator->sort('creator') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modifier') ?></th>
@@ -31,6 +32,7 @@
                     <td><?= h($meeting->start_time) ?></td>
                     <td><?= h($meeting->end_time) ?></td>
                     <td><?= $meeting->has('meeting_type') ? $this->Html->link($meeting->meeting_type->name, ['controller' => 'MeetingTypes', 'action' => 'view', $meeting->meeting_type->id]) : '' ?></td>
+                    <td><?= $this->Number->format($meeting->meeting_location_id) ?></td>
                     <td><?= $this->Number->format($meeting->creator) ?></td>
                     <td><?= h($meeting->created) ?></td>
                     <td><?= $this->Number->format($meeting->modifier) ?></td>

@@ -23,6 +23,10 @@
                     <td><?= h($person->first_name) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Middle Name') ?></th>
+                    <td><?= h($person->middle_name) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Last Name') ?></th>
                     <td><?= h($person->last_name) ?></td>
                 </tr>
@@ -47,16 +51,16 @@
                     <td><?= h($person->home_phone) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Home Address') ?></th>
-                    <td><?= h($person->home_address) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($person->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Hs Grad Year') ?></th>
                     <td><?= $this->Number->format($person->hs_grad_year) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Address Id') ?></th>
+                    <td><?= $this->Number->format($person->address_id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('District') ?></th>
@@ -152,7 +156,7 @@
                             <th><?= __('Person Id') ?></th>
                             <th><?= __('Email') ?></th>
                             <th><?= __('Password') ?></th>
-                            <th><?= __('Active') ?></th>
+                            <th><?= __('Status') ?></th>
                             <th><?= __('User Type Id') ?></th>
                             <th><?= __('Creator') ?></th>
                             <th><?= __('Created') ?></th>
@@ -166,7 +170,7 @@
                             <td><?= h($users->person_id) ?></td>
                             <td><?= h($users->email) ?></td>
                             <td><?= h($users->password) ?></td>
-                            <td><?= h($users->active) ?></td>
+                            <td><?= h($users->status) ?></td>
                             <td><?= h($users->user_type_id) ?></td>
                             <td><?= h($users->creator) ?></td>
                             <td><?= h($users->created) ?></td>

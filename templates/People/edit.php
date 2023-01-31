@@ -23,6 +23,7 @@
                 <legend><?= __('Edit Person') ?></legend>
                 <?php
                     echo $this->Form->control('first_name');
+                    echo $this->Form->control('middle_name');
                     echo $this->Form->control('last_name');
                     echo $this->Form->control('gender');
                     echo $this->Form->control('mobile_phone');
@@ -30,7 +31,7 @@
                     echo $this->Form->control('email');
                     echo $this->Form->control('hs_grad_year');
                     echo $this->Form->control('home_phone');
-                    echo $this->Form->control('home_address');
+                    echo $this->Form->control('address_id');
                     echo $this->Form->control('baptized');
                     echo $this->Form->control('active');
                     echo $this->Form->control('notes');

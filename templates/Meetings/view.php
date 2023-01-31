@@ -27,6 +27,10 @@
                     <td><?= $this->Number->format($meeting->id) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Meeting Location Id') ?></th>
+                    <td><?= $this->Number->format($meeting->meeting_location_id) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Creator') ?></th>
                     <td><?= $this->Number->format($meeting->creator) ?></td>
                 </tr>

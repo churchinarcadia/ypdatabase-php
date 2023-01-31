@@ -59,7 +59,7 @@
                             <th><?= __('Person Id') ?></th>
                             <th><?= __('Email') ?></th>
                             <th><?= __('Password') ?></th>
-                            <th><?= __('Active') ?></th>
+                            <th><?= __('Status') ?></th>
                             <th><?= __('User Type Id') ?></th>
                             <th><?= __('Creator') ?></th>
                             <th><?= __('Created') ?></th>
@@ -73,7 +73,7 @@
                             <td><?= h($users->person_id) ?></td>
                             <td><?= h($users->email) ?></td>
                             <td><?= h($users->password) ?></td>
-                            <td><?= h($users->active) ?></td>
+                            <td><?= h($users->status) ?></td>
                             <td><?= h($users->user_type_id) ?></td>
                             <td><?= h($users->creator) ?></td>
                             <td><?= h($users->created) ?></td>

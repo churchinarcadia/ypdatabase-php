@@ -48,7 +48,16 @@ class PeopleTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->belongsTo('Addresses', [
+            'foreignKey' => 'address_id',
+        ]);
+        $this->hasMany('MeetingLocationsNotify', [
+            'foreignKey' => 'person_id',
+        ]);
         $this->hasMany('MeetingPeople', [
+            'foreignKey' => 'person_id',
+        ]);
+        $this->hasMany('SocialMedias', [
             'foreignKey' => 'person_id',
         ]);
         $this->hasMany('Users', [
@@ -73,6 +82,11 @@ class PeopleTable extends Table
             ->maxLength('first_name', 100)
             ->requirePresence('first_name', 'create')
             ->notEmptyString('first_name');
+
+        $validator
+            ->scalar('middle_name')
+            ->maxLength('middle_name', 20)
+            ->allowEmptyString('middle_name');
 
         $validator
             ->scalar('last_name')
@@ -106,11 +120,6 @@ class PeopleTable extends Table
             ->scalar('home_phone')
             ->maxLength('home_phone', 10)
             ->allowEmptyString('home_phone');
-
-        $validator
-            ->scalar('home_address')
-            ->maxLength('home_address', 255)
-            ->allowEmptyString('home_address');
 
         $validator
             ->boolean('baptized')
@@ -149,5 +158,19 @@ class PeopleTable extends Table
             ->allowEmptyString('modifier');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->add($rules->existsIn('address_id', 'Addresses'), ['errorField' => 'address_id']);
+
+        return $rules;
     }
 }

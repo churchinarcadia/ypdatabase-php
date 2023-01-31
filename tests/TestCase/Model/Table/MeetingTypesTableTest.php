@@ -16,7 +16,7 @@ class MeetingTypesTableTest extends TestCase
      *
      * @var \App\Model\Table\MeetingTypesTable
      */
-    protected $MeetingTypesTable;
+    protected $MeetingTypes;
 
     /**
      * Fixtures
@@ -37,7 +37,7 @@ class MeetingTypesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('MeetingTypes') ? [] : ['className' => MeetingTypesTable::class];
-        $this->MeetingTypesTable = $this->getTableLocator()->get('MeetingTypes', $config);
+        $this->MeetingTypes = $this->getTableLocator()->get('MeetingTypes', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class MeetingTypesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->MeetingTypesTable);
+        unset($this->MeetingTypes);
 
         parent::tearDown();
     }

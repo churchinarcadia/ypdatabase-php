@@ -14,7 +14,7 @@
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('person_id') ?></th>
                     <th><?= $this->Paginator->sort('email') ?></th>
-                    <th><?= $this->Paginator->sort('active') ?></th>
+                    <th><?= $this->Paginator->sort('status') ?></th>
                     <th><?= $this->Paginator->sort('user_type_id') ?></th>
                     <th><?= $this->Paginator->sort('creator') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
@@ -29,7 +29,7 @@
                     <td><?= $this->Number->format($user->id) ?></td>
                     <td><?= $user->has('person') ? $this->Html->link($user->person->id, ['controller' => 'People', 'action' => 'view', $user->person->id]) : '' ?></td>
                     <td><?= h($user->email) ?></td>
-                    <td><?= h($user->active) ?></td>
+                    <td><?= h($user->status) ?></td>
                     <td><?= $user->has('user_type') ? $this->Html->link($user->user_type->name, ['controller' => 'UserTypes', 'action' => 'view', $user->user_type->id]) : '' ?></td>
                     <td><?= $this->Number->format($user->creator) ?></td>
                     <td><?= h($user->created) ?></td>

@@ -29,9 +29,9 @@ class MeetingPeopleFixture extends TestFixture
                 'meeting_id' => 1,
                 'person_id' => 1,
                 'creator' => 1,
-                'created' => '2021-12-10 04:14:05',
+                'created' => '2023-01-31 03:20:31',
                 'modifier' => 1,
-                'modified' => '2021-12-10 04:14:05',
+                'modified' => '2023-01-31 03:20:31',
             ],
         ];
         parent::init();

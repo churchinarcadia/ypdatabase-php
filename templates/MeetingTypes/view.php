@@ -60,6 +60,7 @@
                             <th><?= __('Start Time') ?></th>
                             <th><?= __('End Time') ?></th>
                             <th><?= __('Meeting Type Id') ?></th>
+                            <th><?= __('Meeting Location Id') ?></th>
                             <th><?= __('Creator') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modifier') ?></th>
@@ -73,6 +74,7 @@
                             <td><?= h($meetings->start_time) ?></td>
                             <td><?= h($meetings->end_time) ?></td>
                             <td><?= h($meetings->meeting_type_id) ?></td>
+                            <td><?= h($meetings->meeting_location_id) ?></td>
                             <td><?= h($meetings->creator) ?></td>
                             <td><?= h($meetings->created) ?></td>
                             <td><?= h($meetings->modifier) ?></td>

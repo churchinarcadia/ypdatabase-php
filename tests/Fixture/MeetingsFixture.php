@@ -20,14 +20,15 @@ class MeetingsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'date' => '2021-12-10',
-                'start_time' => '04:14:12',
-                'end_time' => '04:14:12',
+                'date' => '2023-01-31',
+                'start_time' => '03:20:57',
+                'end_time' => '03:20:57',
                 'meeting_type_id' => 1,
+                'meeting_location_id' => 1,
                 'creator' => 1,
-                'created' => '2021-12-10 04:14:12',
+                'created' => '2023-01-31 03:20:57',
                 'modifier' => 1,
-                'modified' => '2021-12-10 04:14:12',
+                'modified' => '2023-01-31 03:20:57',
             ],
         ];
         parent::init();

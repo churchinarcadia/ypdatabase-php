@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time|null $start_time
  * @property \Cake\I18n\Time|null $end_time
  * @property int|null $meeting_type_id
+ * @property int|null $meeting_location_id
  * @property int|null $creator
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $modifier
@@ -37,6 +38,7 @@ class Meeting extends Entity
         'start_time' => true,
         'end_time' => true,
         'meeting_type_id' => true,
+        'meeting_location_id' => true,
         'creator' => true,
         'created' => true,
         'modifier' => true,

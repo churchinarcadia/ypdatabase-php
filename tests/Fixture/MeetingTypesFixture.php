@@ -23,9 +23,9 @@ class MeetingTypesFixture extends TestFixture
                 'name' => 'Lorem ipsum dolor sit amet',
                 'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'creator' => 1,
-                'created' => '2021-12-10 04:14:24',
+                'created' => '2023-01-31 03:20:39',
                 'modifier' => 1,
-                'modified' => '2021-12-10 04:14:24',
+                'modified' => '2023-01-31 03:20:39',
             ],
         ];
         parent::init();

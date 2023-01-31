@@ -27,6 +27,10 @@
                     <td><?= h($user->email) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Status') ?></th>
+                    <td><?= h($user->status) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('User Type') ?></th>
                     <td><?= $user->has('user_type') ? $this->Html->link($user->user_type->name, ['controller' => 'UserTypes', 'action' => 'view', $user->user_type->id]) : '' ?></td>
                 </tr>
@@ -49,10 +53,6 @@
                 <tr>
                     <th><?= __('Modified') ?></th>
                     <td><?= h($user->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Active') ?></th>
-                    <td><?= $user->active ? __('Yes') : __('No'); ?></td>
                 </tr>
             </table>
         </div>
