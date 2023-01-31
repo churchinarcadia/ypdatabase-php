@@ -327,6 +327,30 @@ return [
              * which is the recommended value in production environments
              */
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
+
+            'host' => env('MYSQL_HOST','localhost'),
+            /*
+             * CakePHP will use the default DB port based on the driver selected
+             * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
+             * the following line and set the port accordingly
+             */
+            //'port' => 'non_standard_port_number',
+
+            'username' => 'ypdatabase',
+            'password' => env('MYSQL_PASSWORD','MySql_Password_123'),
+
+            'database' => 'ypdatabase',
+            /*
+             * If not using the default 'public' schema with the PostgreSQL driver
+             * set it here.
+             */
+            //'schema' => 'myapp',
+
+            /*
+             * You can use a DSN string to set the entire configuration
+             */
+            'url' => env('DATABASE_URL', null),
+
         ],
 
         /*
@@ -343,6 +367,14 @@ return [
             'quoteIdentifiers' => false,
             'log' => false,
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
+
+            'host' => 'localhost',
+            //'port' => 'non_standard_port_number',
+            'username' => 'my_app',
+            'password' => 'secret',
+            'database' => 'test_myapp',
+            //'schema' => 'myapp',
+            'url' => env('DATABASE_TEST_URL', 'sqlite://127.0.0.1/tests.sqlite'),
         ],
     ],
 
@@ -417,5 +449,23 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
+    ],
+
+    /*
+     * Email configuration.
+     *
+     * Host and credential configuration in case you are using SmtpTransport
+     *
+     * See app.php for more configuration options.
+     */
+    'EmailTransport' => [
+        'default' => [
+            'host' => 'localhost',
+            'port' => 25,
+            'username' => null,
+            'password' => null,
+            'client' => null,
+            'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
+        ],
     ],
 ];
