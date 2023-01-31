@@ -4,24 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bdcef6fa1918c10e2fe16aca182dc13",
+    "content-hash": "1477dbdf86c7d1ba6ea08efb9a77810b",
     "packages": [
         {
             "name": "admad/cakephp-social-auth",
-            "version": "1.2.1",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ADmad/cakephp-social-auth.git",
-                "reference": "d203a7f521c630ab8410c2dc36e0870b45dd3507"
+                "reference": "495589fe1e7e7905267aeef0a73940de39e2c713"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ADmad/cakephp-social-auth/zipball/d203a7f521c630ab8410c2dc36e0870b45dd3507",
-                "reference": "d203a7f521c630ab8410c2dc36e0870b45dd3507",
+                "url": "https://api.github.com/repos/ADmad/cakephp-social-auth/zipball/495589fe1e7e7905267aeef0a73940de39e2c713",
+                "reference": "495589fe1e7e7905267aeef0a73940de39e2c713",
                 "shasum": ""
             },
             "require": {
-                "cakephp/cakephp": "^4.0",
+                "cakephp/cakephp": "^4.1",
                 "socialconnect/auth": "^3.1"
             },
             "require-dev": {
@@ -42,9 +42,15 @@
             "description": "A CakePHP plugin which allows you to authenticate using social providers like Facebook/Google/Twitter etc.",
             "support": {
                 "issues": "https://github.com/ADmad/cakephp-social-auth/issues",
-                "source": "https://github.com/ADmad/cakephp-social-auth/tree/1.2.1"
+                "source": "https://github.com/ADmad/cakephp-social-auth/tree/1.3.0"
             },
-            "time": "2021-11-13T03:59:25+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/ADmad",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-07-17T13:50:03+00:00"
         },
         {
             "name": "cakephp/authentication",
