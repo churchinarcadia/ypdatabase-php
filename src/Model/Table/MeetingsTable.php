@@ -29,6 +29,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Meeting[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @property \App\Model\Table\MeetingLocationsTable&\Cake\ORM\Association\BelongsTo $MeetingLocations
  */
 class MeetingsTable extends Table
 {

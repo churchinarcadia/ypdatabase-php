@@ -19,8 +19,8 @@ use Cake\ORM\Entity;
  * @property int|null $modifier
  * @property \Cake\I18n\FrozenTime|null $modified
  *
- * @property \App\Model\Entity\Person $person
- * @property \App\Model\Entity\UserType $user_type
+ * @property \App\Model\Entity\Person|null $person
+ * @property \App\Model\Entity\UserType|null $user_type
  */
 class User extends Entity
 {
@@ -55,4 +55,17 @@ class User extends Entity
     protected $_hidden = [
         'password',
     ];
+
+	public const FIELD_ID = 'id';
+	public const FIELD_PERSON_ID = 'person_id';
+	public const FIELD_EMAIL = 'email';
+	public const FIELD_PASSWORD = 'password';
+	public const FIELD_STATUS = 'status';
+	public const FIELD_USER_TYPE_ID = 'user_type_id';
+	public const FIELD_CREATOR = 'creator';
+	public const FIELD_CREATED = 'created';
+	public const FIELD_MODIFIER = 'modifier';
+	public const FIELD_MODIFIED = 'modified';
+	public const FIELD_PERSON = 'person';
+	public const FIELD_USER_TYPE = 'user_type';
 }

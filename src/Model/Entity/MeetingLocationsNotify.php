@@ -40,4 +40,14 @@ class MeetingLocationsNotify extends Entity
         'meeting_location' => true,
         'person' => true,
     ];
+
+	public const FIELD_ID = 'id';
+	public const FIELD_MEETING_LOCATION_ID = 'meeting_location_id';
+	public const FIELD_PERSON_ID = 'person_id';
+	public const FIELD_CREATOR = 'creator';
+	public const FIELD_CREATED = 'created';
+	public const FIELD_MODIFIER = 'modifier';
+	public const FIELD_MODIFIED = 'modified';
+	public const FIELD_MEETING_LOCATION = 'meeting_location';
+	public const FIELD_PERSON = 'person';
 }

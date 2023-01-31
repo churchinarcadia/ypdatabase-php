@@ -29,6 +29,9 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Person[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @property \App\Model\Table\AddressesTable&\Cake\ORM\Association\BelongsTo $Addresses
+ * @property \App\Model\Table\MeetingLocationsNotifyTable&\Cake\ORM\Association\HasMany $MeetingLocationsNotify
+ * @property \App\Model\Table\SocialMediasTable&\Cake\ORM\Association\HasMany $SocialMedias
  */
 class PeopleTable extends Table
 {

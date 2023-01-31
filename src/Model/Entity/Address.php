@@ -50,4 +50,19 @@ class Address extends Entity
         'meeting_locations' => true,
         'people' => true,
     ];
+
+	public const FIELD_ID = 'id';
+	public const FIELD_NUMBER = 'number';
+	public const FIELD_DIRECTION = 'direction';
+	public const FIELD_STREET = 'street';
+	public const FIELD_UNIT = 'unit';
+	public const FIELD_CITY = 'city';
+	public const FIELD_STATE = 'state';
+	public const FIELD_ZIP = 'zip';
+	public const FIELD_CREATOR = 'creator';
+	public const FIELD_CREATED = 'created';
+	public const FIELD_MODIFIER = 'modifier';
+	public const FIELD_MODIFIED = 'modified';
+	public const FIELD_MEETING_LOCATIONS = 'meeting_locations';
+	public const FIELD_PEOPLE = 'people';
 }

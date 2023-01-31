@@ -44,4 +44,16 @@ class SocialMedia extends Entity
         'person' => true,
         'social_media_type' => true,
     ];
+
+	public const FIELD_ID = 'id';
+	public const FIELD_PERSON_ID = 'person_id';
+	public const FIELD_SOCIAL_MEDIA_TYPE_ID = 'social_media_type_id';
+	public const FIELD_HANDLE = 'handle';
+	public const FIELD_CREATOR = 'creator';
+	public const FIELD_CREATED = 'created';
+	public const FIELD_MODIFIER = 'modifier';
+	public const FIELD_MODIFIED = 'modified';
+	public const FIELD_NOTES = 'notes';
+	public const FIELD_PERSON = 'person';
+	public const FIELD_SOCIAL_MEDIA_TYPE = 'social_media_type';
 }

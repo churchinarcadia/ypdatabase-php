@@ -19,7 +19,7 @@ use Cake\ORM\Entity;
  * @property int|null $modifier
  * @property \Cake\I18n\FrozenTime|null $modified
  *
- * @property \App\Model\Entity\Address $address
+ * @property \App\Model\Entity\Address|null $address
  * @property \App\Model\Entity\MeetingLocationsNotify[] $meeting_locations_notify
  * @property \App\Model\Entity\Meeting[] $meetings
  */
@@ -48,4 +48,18 @@ class MeetingLocation extends Entity
         'meeting_locations_notify' => true,
         'meetings' => true,
     ];
+
+	public const FIELD_ID = 'id';
+	public const FIELD_NAME = 'name';
+	public const FIELD_ADDRESS_ID = 'address_id';
+	public const FIELD_ACTIVE = 'active';
+	public const FIELD_NOTIFY = 'notify';
+	public const FIELD_NOTES = 'notes';
+	public const FIELD_CREATOR = 'creator';
+	public const FIELD_CREATED = 'created';
+	public const FIELD_MODIFIER = 'modifier';
+	public const FIELD_MODIFIED = 'modified';
+	public const FIELD_ADDRESS = 'address';
+	public const FIELD_MEETING_LOCATIONS_NOTIFY = 'meeting_locations_notify';
+	public const FIELD_MEETINGS = 'meetings';
 }

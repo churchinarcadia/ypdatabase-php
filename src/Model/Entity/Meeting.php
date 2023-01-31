@@ -19,8 +19,9 @@ use Cake\ORM\Entity;
  * @property int|null $modifier
  * @property \Cake\I18n\FrozenTime|null $modified
  *
- * @property \App\Model\Entity\MeetingType $meeting_type
+ * @property \App\Model\Entity\MeetingType|null $meeting_type
  * @property \App\Model\Entity\MeetingPerson[] $meeting_people
+ * @property \App\Model\Entity\MeetingLocation|null $meeting_location
  */
 class Meeting extends Entity
 {
@@ -46,4 +47,18 @@ class Meeting extends Entity
         'meeting_type' => true,
         'meeting_people' => true,
     ];
+
+	public const FIELD_ID = 'id';
+	public const FIELD_DATE = 'date';
+	public const FIELD_START_TIME = 'start_time';
+	public const FIELD_END_TIME = 'end_time';
+	public const FIELD_MEETING_TYPE_ID = 'meeting_type_id';
+	public const FIELD_MEETING_LOCATION_ID = 'meeting_location_id';
+	public const FIELD_CREATOR = 'creator';
+	public const FIELD_CREATED = 'created';
+	public const FIELD_MODIFIER = 'modifier';
+	public const FIELD_MODIFIED = 'modified';
+	public const FIELD_MEETING_TYPE = 'meeting_type';
+	public const FIELD_MEETING_PEOPLE = 'meeting_people';
+	public const FIELD_MEETING_LOCATION = 'meeting_location';
 }

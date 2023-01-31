@@ -33,6 +33,9 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\MeetingPerson[] $meeting_people
  * @property \App\Model\Entity\User[] $users
+ * @property \App\Model\Entity\Address|null $address
+ * @property \App\Model\Entity\MeetingLocationsNotify[] $meeting_locations_notify
+ * @property \App\Model\Entity\SocialMedia[] $social_medias
  */
 class Person extends Entity
 {
@@ -70,4 +73,32 @@ class Person extends Entity
         'meeting_people' => true,
         'users' => true,
     ];
+
+	public const FIELD_ID = 'id';
+	public const FIELD_FIRST_NAME = 'first_name';
+	public const FIELD_MIDDLE_NAME = 'middle_name';
+	public const FIELD_LAST_NAME = 'last_name';
+	public const FIELD_GENDER = 'gender';
+	public const FIELD_MOBILE_PHONE = 'mobile_phone';
+	public const FIELD_CALL_OR_TEXT = 'call_or_text';
+	public const FIELD_EMAIL = 'email';
+	public const FIELD_HS_GRAD_YEAR = 'hs_grad_year';
+	public const FIELD_HOME_PHONE = 'home_phone';
+	public const FIELD_ADDRESS_ID = 'address_id';
+	public const FIELD_BAPTIZED = 'baptized';
+	public const FIELD_ACTIVE = 'active';
+	public const FIELD_NOTES = 'notes';
+	public const FIELD_INTERNAL_NOTES = 'internal_notes';
+	public const FIELD_DISTRICT = 'district';
+	public const FIELD_FATHER = 'father';
+	public const FIELD_MOTHER = 'mother';
+	public const FIELD_CREATOR = 'creator';
+	public const FIELD_CREATED = 'created';
+	public const FIELD_MODIFIER = 'modifier';
+	public const FIELD_MODIFIED = 'modified';
+	public const FIELD_MEETING_PEOPLE = 'meeting_people';
+	public const FIELD_USERS = 'users';
+	public const FIELD_ADDRESS = 'address';
+	public const FIELD_MEETING_LOCATIONS_NOTIFY = 'meeting_locations_notify';
+	public const FIELD_SOCIAL_MEDIAS = 'social_medias';
 }
