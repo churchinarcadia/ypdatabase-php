@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\SocialMediaType[]|\Cake\Collection\CollectionInterface $socialMediaTypes
+ * @var iterable<\App\Model\Entity\SocialMediaType> $socialMediaTypes
  */
 ?>
 <div class="socialMediaTypes index content">
@@ -13,7 +13,6 @@
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('description') ?></th>
                     <th><?= $this->Paginator->sort('creator') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modifier') ?></th>
@@ -26,10 +25,9 @@
                 <tr>
                     <td><?= $this->Number->format($socialMediaType->id) ?></td>
                     <td><?= h($socialMediaType->name) ?></td>
-                    <td><?= h($socialMediaType->description) ?></td>
-                    <td><?= $this->Number->format($socialMediaType->creator) ?></td>
+                    <td><?= $socialMediaType->creator === null ? '' : $this->Number->format($socialMediaType->creator) ?></td>
                     <td><?= h($socialMediaType->created) ?></td>
-                    <td><?= $this->Number->format($socialMediaType->modifier) ?></td>
+                    <td><?= $socialMediaType->modifier === null ? '' : $this->Number->format($socialMediaType->modifier) ?></td>
                     <td><?= h($socialMediaType->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $socialMediaType->id]) ?>

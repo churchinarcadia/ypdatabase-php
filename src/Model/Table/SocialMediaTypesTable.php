@@ -61,10 +61,6 @@ class SocialMediaTypesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 15)
             ->requirePresence('name', 'create')
@@ -72,8 +68,8 @@ class SocialMediaTypesTable extends Table
             ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->dateTime('description')
-            ->allowEmptyDateTime('description');
+            ->scalar('description')
+            ->allowEmptyString('description');
 
         $validator
             ->nonNegativeInteger('creator')

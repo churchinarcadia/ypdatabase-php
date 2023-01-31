@@ -28,15 +28,11 @@
                 </tr>
                 <tr>
                     <th><?= __('Creator') ?></th>
-                    <td><?= $this->Number->format($socialMediaType->creator) ?></td>
+                    <td><?= $socialMediaType->creator === null ? '' : $this->Number->format($socialMediaType->creator) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modifier') ?></th>
-                    <td><?= $this->Number->format($socialMediaType->modifier) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Description') ?></th>
-                    <td><?= h($socialMediaType->description) ?></td>
+                    <td><?= $socialMediaType->modifier === null ? '' : $this->Number->format($socialMediaType->modifier) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
@@ -47,6 +43,12 @@
                     <td><?= h($socialMediaType->modified) ?></td>
                 </tr>
             </table>
+            <div class="text">
+                <strong><?= __('Description') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($socialMediaType->description)); ?>
+                </blockquote>
+            </div>
             <div class="related">
                 <h4><?= __('Related Social Medias') ?></h4>
                 <?php if (!empty($socialMediaType->social_medias)) : ?>

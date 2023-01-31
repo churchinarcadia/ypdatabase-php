@@ -10,7 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
- * @property \Cake\I18n\FrozenTime|null $description
+ * @property string|null $description
  * @property int|null $creator
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $modifier
@@ -27,7 +27,7 @@ class SocialMediaType extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'name' => true,
@@ -38,13 +38,4 @@ class SocialMediaType extends Entity
         'modified' => true,
         'social_medias' => true,
     ];
-
-	public const FIELD_ID = 'id';
-	public const FIELD_NAME = 'name';
-	public const FIELD_DESCRIPTION = 'description';
-	public const FIELD_CREATOR = 'creator';
-	public const FIELD_CREATED = 'created';
-	public const FIELD_MODIFIER = 'modifier';
-	public const FIELD_MODIFIED = 'modified';
-	public const FIELD_SOCIAL_MEDIAS = 'social_medias';
 }
