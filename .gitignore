@@ -48,3 +48,6 @@ node_modules/
 
 #Docker-related
 .env
+
+#Temporary
+app_local-backup.php
