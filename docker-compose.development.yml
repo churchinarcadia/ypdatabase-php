@@ -1,0 +1,48 @@
+version: '3'
+name: ypdatabase-dev
+services:
+  mariadb:
+    image: mariadb:10.10.2
+    expose:
+      - 3306
+    environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+      MARIADB_DATABASE: ypdatabase
+      MARIADB_USER: ypdatabase
+      MARIADB_PASSWORD: ${MYSQL_PASSWORD:?Missing MYSQL_PASSWORD}
+    volumes:
+      - ./docker/development/mariadb:/var/lib/mysql
+    networks:
+      - default
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --execute \"SHOW DATABASES;\""
+      interval: 5s
+      timeout: 300s
+      retries: 60
+  phpmyadmin:
+    image: phpmyadmin
+    depends_on:
+      - mariadb
+    ports:
+      - ${PHPMYADMIN_PORT:-81}:80
+    environment:
+      MYSQL_ROOT_PASSWORD: null
+      PMA_HOST: mariadb
+    networks:
+     - default
+  openlitespeed:
+    image: litespeedtech/openlitespeed
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    ports:
+      - ${APP_HTTP_PORT:-80}:80
+      - ${APP_HTTPS_PORT:-443}:443
+    volumes:
+      - ./:/var/www/vhosts/localhost/html
+    networks:
+      - default
+    command: |-
+      bash -c "cd /var/www/vhosts/localhost/html && bin/cake migrations migrate"
+networks:
+  default:
