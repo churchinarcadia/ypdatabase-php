@@ -29,8 +29,6 @@
                     echo $this->Form->control('city');
                     echo $this->Form->control('state');
                     echo $this->Form->control('zip');
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

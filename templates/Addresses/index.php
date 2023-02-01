@@ -12,13 +12,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('number') ?></th>
-                    <th><?= $this->Paginator->sort('direction') ?></th>
-                    <th><?= $this->Paginator->sort('street') ?></th>
-                    <th><?= $this->Paginator->sort('unit') ?></th>
-                    <th><?= $this->Paginator->sort('city') ?></th>
-                    <th><?= $this->Paginator->sort('state') ?></th>
-                    <th><?= $this->Paginator->sort('zip') ?></th>
+                    <th><?= $this->Paginator->sort('full_address') ?></th>
                     <th><?= $this->Paginator->sort('creator') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modifier') ?></th>
@@ -30,16 +24,10 @@
                 <?php foreach ($addresses as $address): ?>
                 <tr>
                     <td><?= $this->Number->format($address->id) ?></td>
-                    <td><?= h($address->number) ?></td>
-                    <td><?= h($address->direction) ?></td>
-                    <td><?= h($address->street) ?></td>
-                    <td><?= h($address->unit) ?></td>
-                    <td><?= h($address->city) ?></td>
-                    <td><?= h($address->state) ?></td>
-                    <td><?= $this->Number->format($address->zip) ?></td>
-                    <td><?= $this->Number->format($address->creator) ?></td>
+                    <td><?= h($address->full_address) ?></td>
+                    <td><?= h($address->Creator->username) ?></td>
                     <td><?= h($address->created) ?></td>
-                    <td><?= $this->Number->format($address->modifier) ?></td>
+                    <td><?= h($address->Modifier->username) ?></td>
                     <td><?= h($address->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $address->id]) ?>

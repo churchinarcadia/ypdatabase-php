@@ -13,7 +13,7 @@ use Cake\ORM\Entity;
  * @property int|null $address_id
  * @property bool $active
  * @property bool $notify
- * @property \Cake\I18n\FrozenTime|null $notes
+ * @property string|null $notes
  * @property int|null $creator
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $modifier

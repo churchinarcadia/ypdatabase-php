@@ -76,11 +76,12 @@ class MeetingLocationsTable extends Table
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 20)
+            ->maxLength('name', 50)
             ->requirePresence('name', 'create')
             ->notEmptyString('name')
             ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
+        #TODO increase field length in database structure
+        
         $validator
             ->boolean('active')
             ->notEmptyString('active');
@@ -90,8 +91,9 @@ class MeetingLocationsTable extends Table
             ->notEmptyString('notify');
 
         $validator
-            ->dateTime('notes')
-            ->allowEmptyDateTime('notes');
+            ->scalar('notes')
+            ->allowEmptyString('notes');
+        #TODO adjust column type in database structure
 
         $validator
             ->nonNegativeInteger('creator')

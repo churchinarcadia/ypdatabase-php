@@ -23,8 +23,6 @@
                     echo $this->Form->control('active');
                     echo $this->Form->control('notify');
                     echo $this->Form->control('notes');
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
