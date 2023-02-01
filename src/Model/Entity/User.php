@@ -68,4 +68,21 @@ class User extends Entity
 	public const FIELD_MODIFIED = 'modified';
 	public const FIELD_PERSON = 'person';
 	public const FIELD_USER_TYPE = 'user_type';
+
+    /**
+     * Virtual field username
+     */
+    protected $_virtual = ['username'];
+    
+    /**
+     * getUsername method
+     * 
+     * @return String
+     */
+    protected function _getUsername()
+    {
+        $username = strtolower(substr($this->Person->first_name,0,1) . $this->Person->last_name);
+        
+        return $username;
+    }
 }

@@ -28,6 +28,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\MeetingType[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin App\Model\Behavior\CreatorModifier
  */
 class MeetingTypesTable extends Table
 {
@@ -46,6 +47,7 @@ class MeetingTypesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('CreatorModifier');
 
         $this->hasMany('Meetings', [
             'foreignKey' => 'meeting_type_id',

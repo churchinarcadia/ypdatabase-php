@@ -29,6 +29,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin App\Model\Behavior\CreatorModifier
  */
 class UsersTable extends Table
 {
@@ -43,10 +44,11 @@ class UsersTable extends Table
         parent::initialize($config);
 
         $this->setTable('users');
-        $this->setDisplayField('id');
+        $this->setDisplayField('username');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('CreatorModifier');
 
         $this->belongsTo('People', [
             'foreignKey' => 'person_id',

@@ -101,4 +101,21 @@ class Person extends Entity
 	public const FIELD_ADDRESS = 'address';
 	public const FIELD_MEETING_LOCATIONS_NOTIFY = 'meeting_locations_notify';
 	public const FIELD_SOCIAL_MEDIAS = 'social_medias';
+
+    /**
+     * Virtual field full_name
+     */
+    protected $_virtual = ['full_name'];
+    
+    /**
+     * getFullName method
+     * 
+     * @return String
+     */
+    protected function _getFullName()
+    {
+        $full_name = $this->first_name . ' ' . $this->last_name;
+
+        return $full_name;
+    }
 }

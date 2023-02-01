@@ -29,6 +29,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Meeting[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin App\Model\Behavior\CreatorModifier
+ * 
  * @property \App\Model\Table\MeetingLocationsTable&\Cake\ORM\Association\BelongsTo $MeetingLocations
  */
 class MeetingsTable extends Table
@@ -44,10 +46,11 @@ class MeetingsTable extends Table
         parent::initialize($config);
 
         $this->setTable('meetings');
-        $this->setDisplayField('id');
+        $this->setDisplayField('identifier');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('CreatorModifier');
 
         $this->belongsTo('MeetingTypes', [
             'foreignKey' => 'meeting_type_id',

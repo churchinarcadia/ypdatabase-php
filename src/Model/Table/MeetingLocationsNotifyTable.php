@@ -29,6 +29,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\MeetingLocationsNotify[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin App\Model\Behavior\CreatorModifier
  */
 class MeetingLocationsNotifyTable extends Table
 {
@@ -43,10 +44,11 @@ class MeetingLocationsNotifyTable extends Table
         parent::initialize($config);
 
         $this->setTable('meeting_locations_notify');
-        $this->setDisplayField('id');
+        $this->setDisplayField('MeetingLocation.name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('CreatorModifier');
 
         $this->belongsTo('MeetingLocations', [
             'foreignKey' => 'meeting_location_id',

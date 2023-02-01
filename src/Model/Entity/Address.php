@@ -65,4 +65,35 @@ class Address extends Entity
 	public const FIELD_MODIFIED = 'modified';
 	public const FIELD_MEETING_LOCATIONS = 'meeting_locations';
 	public const FIELD_PEOPLE = 'people';
+
+    /**
+     * Virtual field full_address
+     */
+    protected $_virtual = ['full_address'];
+    
+    /**
+     * getFullAddress method
+     * 
+     * @return String
+     */
+    protected function _getFullAddress()
+    {
+        $full_address = $this->number;
+
+        if ($this->direction != '')
+        {
+            $full_address .= ' ' . $this->direction;
+        }
+
+        $full_address .= ' ' . $this->street;
+
+        if ($this->unit != '')
+        {
+            $full_address .= ' Apt ' . $this->unit;
+        }
+
+        $full_address .= ', ' . $this->city . ', ' . $this->state . ' ' . $this-> zip;
+        
+        return $full_address;
+    }
 }

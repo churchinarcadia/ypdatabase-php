@@ -29,6 +29,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Person[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin App\Model\Behavior\CreatorModifier
+ * 
  * @property \App\Model\Table\AddressesTable&\Cake\ORM\Association\BelongsTo $Addresses
  * @property \App\Model\Table\MeetingLocationsNotifyTable&\Cake\ORM\Association\HasMany $MeetingLocationsNotify
  * @property \App\Model\Table\SocialMediasTable&\Cake\ORM\Association\HasMany $SocialMedias
@@ -46,10 +48,11 @@ class PeopleTable extends Table
         parent::initialize($config);
 
         $this->setTable('people');
-        $this->setDisplayField('id');
+        $this->setDisplayField('full_name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('CreatorModifier');
 
         $this->belongsTo('Addresses', [
             'foreignKey' => 'address_id',

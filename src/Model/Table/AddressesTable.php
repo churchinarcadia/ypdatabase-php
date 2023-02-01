@@ -8,6 +8,10 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
+//Needed for ADmad/SocialAuth
+use \Cake\Datasource\EntityInterface;
+use \Cake\Http\Session;
+
 /**
  * Addresses Model
  *
@@ -29,6 +33,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Address[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin App\Model\Behavior\CreatorModifier
  */
 class AddressesTable extends Table
 {
@@ -43,10 +48,11 @@ class AddressesTable extends Table
         parent::initialize($config);
 
         $this->setTable('addresses');
-        $this->setDisplayField('id');
+        $this->setDisplayField('full_address');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('CreatorModifier');
 
         $this->hasMany('MeetingLocations', [
             'foreignKey' => 'address_id',
@@ -117,4 +123,5 @@ class AddressesTable extends Table
 
         return $validator;
     }
+
 }

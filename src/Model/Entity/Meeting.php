@@ -61,4 +61,21 @@ class Meeting extends Entity
 	public const FIELD_MEETING_TYPE = 'meeting_type';
 	public const FIELD_MEETING_PEOPLE = 'meeting_people';
 	public const FIELD_MEETING_LOCATION = 'meeting_location';
+
+    /**
+     * Virtual field identifier
+     */
+    protected $_virtual = ['identifier'];
+    
+    /**
+     * getIdentifier method
+     * 
+     * @return String
+     */
+    protected function _getIdentifier()
+    {
+        $identifier = $this->date . ' | ' . $this->start_time;
+
+        return $identifier;
+    }
 }
