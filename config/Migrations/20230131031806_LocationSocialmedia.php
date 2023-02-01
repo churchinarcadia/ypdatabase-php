@@ -17,39 +17,39 @@ class LocationSocialmedia extends AbstractMigration
     public function up()
     {
         $this->table('meeting_people')
-            ->dropForeignKey([], 'meetingpeople_person_fk')
-            ->dropForeignKey([], 'meetingpeople_modifier_fk')
-            ->dropForeignKey([], 'meetingpeople_meeting_fk')
-            ->dropForeignKey([], 'meetingpeople_creator_fk')
+            ->dropForeignKey('person_id')
+            ->dropForeignKey('modifier')
+            ->dropForeignKey('meeting_id')
+            ->dropForeignKey('creator')
             ->update();
         $this->table('meeting_types')
-            ->dropForeignKey([], 'meetingtypes_modifier_fk')
-            ->dropForeignKey([], 'meetingtypes_creator_fk')
+            ->dropForeignKey('modifier')
+            ->dropForeignKey('creator')
             ->update();
         $this->table('meetings')
-            ->dropForeignKey([], 'meetings_modifier_fk')
-            ->dropForeignKey([], 'meetings_meetingtype_fk')
-            ->dropForeignKey([], 'meetings_creator_fk')
+            ->dropForeignKey('meeting_type_id')
+            ->dropForeignKey('modifier')
+            ->dropForeignKey('creator')
             ->update();
         $this->table('people')
-            ->dropForeignKey([], 'people_mother_fk')
-            ->dropForeignKey([], 'people_modifier_fk')
-            ->dropForeignKey([], 'people_father_fk')
-            ->dropForeignKey([], 'people_creator_fk')
+            ->dropForeignKey('father')
+            ->dropForeignKey('mother')
+            ->dropForeignKey('creator')
+            ->dropForeignKey('modifier')
             ->update();
 
         $this->table('people')
             ->removeColumn('home_address')
             ->update();
         $this->table('user_types')
-            ->dropForeignKey([], 'usertypes_modifier_fk')
-            ->dropForeignKey([], 'usertypes_creator_fk')
+            ->dropForeignKey('creator')
+            ->dropForeignKey('modifier')
             ->update();
         $this->table('users')
-            ->dropForeignKey([], 'users_usertype_fk')
-            ->dropForeignKey([], 'users_person_fk')
-            ->dropForeignKey([], 'users_modifier_fk')
-            ->dropForeignKey([], 'users_creator_fk')
+            ->dropForeignKey('user_type_id')
+            ->dropForeignKey('person_id')
+            ->dropForeignKey('creator')
+            ->dropForeignKey('modifier')
             ->update();
 
         $this->table('users')
