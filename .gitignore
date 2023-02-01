@@ -49,5 +49,8 @@ node_modules/
 #Docker-related
 .env
 
+docker/development/mariadb
+docker/production/mariadb
+
 #Temporary
 app_local-backup.php
