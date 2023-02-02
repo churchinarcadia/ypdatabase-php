@@ -52,6 +52,16 @@ class UserTypesTable extends Table
         $this->hasMany('Users', [
             'foreignKey' => 'user_type_id',
         ]);
+        $this->belongsTo('UserTypeCreators', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
+        $this->belongsTo('UserTypeModifiers', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
     }
 
     /**

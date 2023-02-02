@@ -69,6 +69,16 @@ class PeopleTable extends Table
         $this->hasMany('Users', [
             'foreignKey' => 'person_id',
         ]);
+        $this->belongsTo('PeopleCreators', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
+        $this->belongsTo('PeopleModifiers', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
     }
 
     /**

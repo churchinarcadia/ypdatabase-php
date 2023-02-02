@@ -58,6 +58,16 @@ class MeetingPeopleTable extends Table
             'foreignKey' => 'person_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('MeetingPeopleCreators', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
+        $this->belongsTo('MeetingPeopleModifiers', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
     }
 
     /**

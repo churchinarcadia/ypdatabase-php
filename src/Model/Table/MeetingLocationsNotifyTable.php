@@ -58,6 +58,16 @@ class MeetingLocationsNotifyTable extends Table
             'foreignKey' => 'person_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('MeetingLocationNotifyCreators', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
+        $this->belongsTo('MeetingLocationNotifyModifiers', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
     }
 
     /**

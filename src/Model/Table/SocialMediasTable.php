@@ -58,6 +58,16 @@ class SocialMediasTable extends Table
             'foreignKey' => 'social_media_type_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('SocialMediaCreators', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
+        $this->belongsTo('SocialMediaModifiers', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
     }
 
     /**

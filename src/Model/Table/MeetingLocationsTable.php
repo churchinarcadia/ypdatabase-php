@@ -60,6 +60,16 @@ class MeetingLocationsTable extends Table
         $this->hasMany('Meetings', [
             'foreignKey' => 'meeting_location_id',
         ]);
+        $this->belongsTo('MeetingLocationsCreators', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
+        $this->belongsTo('MeetingLocationsModifiers', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
     }
 
     /**

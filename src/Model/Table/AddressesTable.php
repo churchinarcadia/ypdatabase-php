@@ -60,6 +60,16 @@ class AddressesTable extends Table
         $this->hasMany('People', [
             'foreignKey' => 'address_id',
         ]);
+        $this->belongsTo('AddressCreators', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
+        $this->belongsTo('AddressModifiers', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
     }
 
     /**

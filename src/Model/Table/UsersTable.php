@@ -56,6 +56,104 @@ class UsersTable extends Table
         $this->belongsTo('UserTypes', [
             'foreignKey' => 'user_type_id',
         ]);
+        $this->belongsTo('UserCreators', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
+        $this->belongsTo('UserModifiers', [
+            'foreignKey' => 'creator',
+            'className' => 'Users',
+            'joinType' => 'LEFT',
+        ]);
+        $this->hasMany('CreatedAddresses', [
+            'foreignKey' => 'creator',
+            'className' => 'Addresses'
+        ]);
+        $this->hasMany('ModifiedAddresses', [
+            'foreignKey' => 'modifier',
+            'className' => 'Addresses'
+        ]);
+        $this->hasMany('CreatedMeetingLocationsNotify', [
+            'foreignKey' => 'creator',
+            'className' => 'MeetingLocationsNotify'
+        ]);
+        $this->hasMany('ModifiedMeetingLocationsNotify', [
+            'foreignKey' => 'modifier',
+            'className' => 'MeetingLocationsNotify'
+        ]);
+        $this->hasMany('CreatedMeetingLocations', [
+            'foreignKey' => 'creator',
+            'className' => 'MeetingLocations'
+        ]);
+        $this->hasMany('ModifiedMeetingLocations', [
+            'foreignKey' => 'modifier',
+            'className' => 'MeetingLocations'
+        ]);
+        $this->hasMany('CreatedMeetingPeople', [
+            'foreignKey' => 'creator',
+            'className' => 'MeetingPeople'
+        ]);
+        $this->hasMany('ModifiedMeetingPeople', [
+            'foreignKey' => 'modifier',
+            'className' => 'MeetingPeople'
+        ]);
+        $this->hasMany('CreatedMeetings', [
+            'foreignKey' => 'creator',
+            'className' => 'Meetings'
+        ]);
+        $this->hasMany('ModifiedMeetings', [
+            'foreignKey' => 'modifier',
+            'className' => 'Meetings'
+        ]);
+        $this->hasMany('CreatedMeetingTypes', [
+            'foreignKey' => 'creator',
+            'className' => 'MeetingTypes'
+        ]);
+        $this->hasMany('ModifiedMeetingTypes', [
+            'foreignKey' => 'modifier',
+            'className' => 'MeetingTypes'
+        ]);
+        $this->hasMany('CreatedPeople', [
+            'foreignKey' => 'creator',
+            'className' => 'People'
+        ]);
+        $this->hasMany('ModifiedPeople', [
+            'foreignKey' => 'modifier',
+            'className' => 'People'
+        ]);
+        $this->hasMany('CreatedSocialMedias', [
+            'foreignKey' => 'creator',
+            'className' => 'SocialMedias'
+        ]);
+        $this->hasMany('ModifiedSocialMedias', [
+            'foreignKey' => 'modifier',
+            'className' => 'SocialMedias'
+        ]);
+        $this->hasMany('CreatedSocialMediaTypes', [
+            'foreignKey' => 'creator',
+            'className' => 'SocialMediaTypes'
+        ]);
+        $this->hasMany('ModifiedSocialMediaTypes', [
+            'foreignKey' => 'modifier',
+            'className' => 'SocialMediaTypes'
+        ]);
+        $this->hasMany('CreatedUsers', [
+            'foreignKey' => 'creator',
+            'className' => 'Users'
+        ]);
+        $this->hasMany('ModifiedUsers', [
+            'foreignKey' => 'modifier',
+            'className' => 'Users'
+        ]);
+        $this->hasMany('CreatedUserTypes', [
+            'foreignKey' => 'creator',
+            'className' => 'UserTypes'
+        ]);
+        $this->hasMany('ModifiedUserTypes', [
+            'foreignKey' => 'modifier',
+            'className' => 'UserTypes'
+        ]);
     }
 
     /**
