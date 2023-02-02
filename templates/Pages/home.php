@@ -40,10 +40,10 @@ $cakeDescription = 'Church in Arcadia YP Database';
     <header>
         <div class="container text-center">
             <a href="/" target="_blank" rel="noopener">
-                <img alt="YP Database Logo" src="https://cakephp.org/v2/img/logos/CakePHP_Logo.svg" width="350" />
+                <img alt="YP Database Logo" src="img/main_logo.svg" width="350" />
             </a>
             <h1>
-                Welcome to YP Database
+                Welcome
             </h1>
         </div>
     </header>

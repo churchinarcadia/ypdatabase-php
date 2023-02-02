@@ -19,28 +19,28 @@
             <h3><?= h($userType->name) ?></h3>
             <table>
                 <tr>
+                    <th><?= __('ID') ?></th>
+                    <td><?= h($userType->id) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Name') ?></th>
                     <td><?= h($userType->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($userType->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Creator') ?></th>
-                    <td><?= $this->Number->format($userType->creator) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modifier') ?></th>
-                    <td><?= $this->Number->format($userType->modifier) ?></td>
+                    <td><?= $userType->has('user_type_creator') ? $this->Html->link($userType->user_type_creator->username, ['controller' => 'Users', 'action' => 'view', $userType->user_type_creator->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($userType->created) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($userType->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modifier') ?></th>
+                    <td><?= $userType->has('user_type_modifier') ? $this->Html->link($userType->user_type_modifier->username, ['controller' => 'Users', 'action' => 'view', $userType->user_type_modifier->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($userType->modified) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($userType->modified) ?></td>
                 </tr>
             </table>
             <div class="text">

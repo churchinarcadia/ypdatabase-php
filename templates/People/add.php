@@ -34,8 +34,6 @@
                     echo $this->Form->control('district');
                     echo $this->Form->control('father');
                     echo $this->Form->control('mother');
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

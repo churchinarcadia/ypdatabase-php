@@ -9,11 +9,14 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php //TODO check for admin usertype
+            /*
             <?= $this->Form->postLink(
                 __('Delete'),
                 ['action' => 'delete', $meetingLocation->id],
                 ['confirm' => __('Are you sure you want to delete # {0}?', $meetingLocation->id), 'class' => 'side-nav-item']
             ) ?>
+            */?>
             <?= $this->Html->link(__('List Meeting Locations'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
@@ -28,8 +31,11 @@
                     echo $this->Form->control('active');
                     echo $this->Form->control('notify');
                     echo $this->Form->control('notes');
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
+                    //TODO check if admin usertype
+                    echo $this->Form->control('creator', ['options' => $users, 'empty' => true]);
+                    echo $this->Form->control('created');
+                    echo $this->Form->control('modifier', ['options' => $users, 'empty' => true]);
+                    echo $this->Form->control('modified');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

@@ -22,9 +22,7 @@
                     echo $this->Form->control('start_time', ['empty' => true]);
                     echo $this->Form->control('end_time', ['empty' => true]);
                     echo $this->Form->control('meeting_type_id', ['options' => $meetingTypes, 'empty' => true]);
-                    echo $this->Form->control('meeting_location_id');
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
+                    echo $this->Form->control('meeting_location_id', ['options' => $meetingLocations, 'empty' => true]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

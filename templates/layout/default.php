@@ -14,7 +14,7 @@
  * @var \App\View\AppView $this
  */
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
+$cakeDescription = 'Church in Arcadia YP Database';
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,11 +38,27 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
+            <a href="<?= $this->Url->build('/') ?>">YP<span>Database</span></a>
         </div>
         <div class="top-nav-links">
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/4/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
+            <?php echo $this->Html->link(
+                'Documentation',
+                ['controller' => 'Pages','action' => 'display', 'home'],
+            );
+            if (/*Check if user is logged in*/ false)
+            {
+                echo $this->Html->link(
+                    'Log Out',
+                    ['controller' => 'Users', 'action' => 'logout'],
+                    ['class' => 'button']
+                );
+            } else {
+                echo $this->Html->link(
+                    'Login',
+                    ['controller' => 'Users', 'action' => 'login'],
+                    ['class' => 'button']
+                );
+            } ?>
         </div>
     </nav>
     <main class="main">

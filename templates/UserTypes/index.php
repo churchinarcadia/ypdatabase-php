@@ -13,6 +13,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
+                    <?php //TODO check for admin usertype ?>
                     <th><?= $this->Paginator->sort('creator') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modifier') ?></th>
@@ -23,16 +24,18 @@
             <tbody>
                 <?php foreach ($userTypes as $userType): ?>
                 <tr>
-                    <td><?= $this->Number->format($userType->id) ?></td>
+                    <td><?= h($userType->id) ?></td>
                     <td><?= h($userType->name) ?></td>
-                    <td><?= $this->Number->format($userType->creator) ?></td>
-                    <td><?= h($userType->created) ?></td>
-                    <td><?= $this->Number->format($userType->modifier) ?></td>
-                    <td><?= h($userType->modified) ?></td>
+                    <?php //TODO check for admin usertype ?>
+                    <td><?= $userType->has('user_type_creator') ? $this->Html->link($userType->user_type_creator->username, ['controller' => 'Users', 'action' => 'view', $userType->user_type_creator->id]) : '' ?></td>
+                    <td><?= $this->Timezone->converted_timezone($userType->created) ?></td>
+                    <td><?= $userType->has('user_type_modifier') ? $this->Html->link($userType->user_type_modifier->username, ['controller' => 'Users', 'action' => 'view', $userType->user_type_modifier->id]) : '' ?></td>
+                    <td><?= $this->Timezone->converted_timezone($userType->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $userType->id]) ?>
+                        <?php //TODO check for admin usertype ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $userType->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $userType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userType->id)]) ?>
+                        <? //<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $userType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userType->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -14,27 +14,31 @@
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('meeting_location_id') ?></th>
                     <th><?= $this->Paginator->sort('person_id') ?></th>
+                    <?php //TODO check for admin usertype ?>
                     <th><?= $this->Paginator->sort('creator') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modifier') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
+                    <?php //TODO check for serving one or admin usertype ?>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($meetingLocationsNotify as $meetingLocationsNotify): ?>
                 <tr>
-                    <td><?= $this->Number->format($meetingLocationsNotify->id) ?></td>
+                    <td><?= h($meetingLocationsNotify->id) ?></td>
                     <td><?= $meetingLocationsNotify->has('meeting_location') ? $this->Html->link($meetingLocationsNotify->meeting_location->name, ['controller' => 'MeetingLocations', 'action' => 'view', $meetingLocationsNotify->meeting_location->id]) : '' ?></td>
-                    <td><?= $meetingLocationsNotify->has('person') ? $this->Html->link($meetingLocationsNotify->person->id, ['controller' => 'People', 'action' => 'view', $meetingLocationsNotify->person->id]) : '' ?></td>
-                    <td><?= $this->Number->format($meetingLocationsNotify->creator) ?></td>
-                    <td><?= h($meetingLocationsNotify->created) ?></td>
-                    <td><?= $this->Number->format($meetingLocationsNotify->modifier) ?></td>
-                    <td><?= h($meetingLocationsNotify->modified) ?></td>
+                    <td><?= $meetingLocationsNotify->has('person') ? $this->Html->link($meetingLocationsNotify->person->full_name, ['controller' => 'People', 'action' => 'view', $meetingLocationsNotify->person->id]) : '' ?></td>
+                    <td><?= $meetingLocationsNotify->has('meeting_location_notify_creator') ? $this->Html->link($meetingLocationsNotify->meeting_location_notify_creator->username, ['controller' => 'Users', 'action' => 'view', $meetingLocationsNotify->meeting_location_notify_creator->id]) : '' ?></td>
+                    <td><?= $this->Timezone->converted_timezone($meetingLocationsNotify->created) ?></td>
+                    <td><?= $meetingLocationsNotify->has('meeting_location_notify_modifier') ? $this->Html->link($meetingLocationsNotify->meeting_location_notify_modifier->username, ['controller' => 'Users', 'action' => 'view', $meetingLocationsNotify->meeting_location_notify_modifier->id]) : '' ?></td>
+                    <td><?= $this->Timezone->converted_timezone($meetingLocationsNotify->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $meetingLocationsNotify->id]) ?>
+                        <?php //TODO check for serving one or admin usertype ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $meetingLocationsNotify->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $meetingLocationsNotify->id], ['confirm' => __('Are you sure you want to delete # {0}?', $meetingLocationsNotify->id)]) ?>
+                        <?php //TODO check for admin usertype
+                        //<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $meetingLocationsNotify->id], ['confirm' => __('Are you sure you want to delete # {0}?', $meetingLocationsNotify->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

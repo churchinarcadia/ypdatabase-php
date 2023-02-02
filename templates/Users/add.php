@@ -19,13 +19,16 @@
             <fieldset>
                 <legend><?= __('Add User') ?></legend>
                 <?php
+                    //TODO check for admin usertype
                     echo $this->Form->control('person_id', ['options' => $people, 'empty' => true]);
                     echo $this->Form->control('email');
                     echo $this->Form->control('password');
+                    //TODO add password confirmation field
+
+                    //TODO add options
+                    //TODO check for admin usertype
                     echo $this->Form->control('status');
                     echo $this->Form->control('user_type_id', ['options' => $userTypes, 'empty' => true]);
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

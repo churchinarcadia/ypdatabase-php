@@ -13,6 +13,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('full_address') ?></th>
+                    <?php //TODO Add check for Admin usertype ?>
                     <th><?= $this->Paginator->sort('creator') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modifier') ?></th>
@@ -23,16 +24,19 @@
             <tbody>
                 <?php foreach ($addresses as $address): ?>
                 <tr>
-                    <td><?= $this->Number->format($address->id) ?></td>
+                    <td><?= h($address->id) ?></td>
                     <td><?= h($address->full_address) ?></td>
-                    <td><?= h($address->Creator->username) ?></td>
-                    <td><?= h($address->created) ?></td>
-                    <td><?= h($address->Modifier->username) ?></td>
-                    <td><?= h($address->modified) ?></td>
+                    <?php //TODO Add check for Admin usertype ?>
+                    <td><?= $address->has('address_creator') ? $this->Html->link($address->address_creator->username, ['controller' => 'Users', 'action' => 'view', $address->address_creator->id]) : '' ?></td>
+                    <td><?= $this->Timezone->converted_timezone($address->created) ?></td>
+                    <td><?= $address->has('address_modifier') ? $this->Html->link($address->address_modifier->username, ['controller' => 'Users', 'action' => 'view', $address->address_modifier->id]) : '' ?></td>
+                    <td><?= $this->Timezone->converted_timezone($address->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $address->id]) ?>
+                        <?php //TODO add check for serving one or admin usertype ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $address->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $address->id], ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]) ?>
+                        <?php //TODO add check for admin usertype
+                        //<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $address->id], ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

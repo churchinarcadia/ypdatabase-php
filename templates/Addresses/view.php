@@ -8,9 +8,13 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php //TODO check for serving one or admin usertype?>
             <?= $this->Html->link(__('Edit Address'), ['action' => 'edit', $address->id], ['class' => 'side-nav-item']) ?>
+            <?php //TODO check for admin usertype?>
             <?= $this->Form->postLink(__('Delete Address'), ['action' => 'delete', $address->id], ['confirm' => __('Are you sure you want to delete # {0}?', $address->id), 'class' => 'side-nav-item']) ?>
+            <?php //TODO check for steward or above usertype ?>
             <?= $this->Html->link(__('List Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?php //TODO check for admin usertype ?>
             <?= $this->Html->link(__('New Address'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
@@ -18,6 +22,10 @@
         <div class="addresses view content">
             <h3><?= h($address->id) ?></h3>
             <table>
+                <tr>
+                    <th><?= __('ID') ?></th>
+                    <td><?= h($address->id) ?></td>
+                </tr>
                 <tr>
                     <th><?= __('Number') ?></th>
                     <td><?= h($address->number) ?></td>
@@ -43,28 +51,24 @@
                     <td><?= h($address->state) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($address->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Zip') ?></th>
-                    <td><?= $this->Number->format($address->zip) ?></td>
+                    <td><?= h($address->zip) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Creator') ?></th>
-                    <td><?= $this->Number->format($address->creator) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modifier') ?></th>
-                    <td><?= $this->Number->format($address->modifier) ?></td>
+                    <td><?= $address->has('address_creator') ? $this->Html->link($address->address_creator->username, ['controller' => 'Users', 'action' => 'view', $address->address_creator->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($address->created) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($address->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modifier') ?></th>
+                    <td><?= $address->has('address_modifier') ? $this->Html->link($address->address_modifier->username, ['controller' => 'Users', 'action' => 'view', $address->address_modifier->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($address->modified) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($address->modified) ?></td>
                 </tr>
             </table>
             <div class="related">
@@ -73,7 +77,7 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
+                            <th><?= __('ID') ?></th>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Address Id') ?></th>
                             <th><?= __('Active') ?></th>

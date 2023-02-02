@@ -8,9 +8,12 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php //TODO check for admin usertype ?>
             <?= $this->Html->link(__('Edit Social Media Type'), ['action' => 'edit', $socialMediaType->id], ['class' => 'side-nav-item']) ?>
             <?= $this->Form->postLink(__('Delete Social Media Type'), ['action' => 'delete', $socialMediaType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $socialMediaType->id), 'class' => 'side-nav-item']) ?>
+            <?php //TODO check for steward usertype or higher ?>
             <?= $this->Html->link(__('List Social Media Types'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?php //TODO check for admin usertype ?>
             <?= $this->Html->link(__('New Social Media Type'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
@@ -19,28 +22,28 @@
             <h3><?= h($socialMediaType->name) ?></h3>
             <table>
                 <tr>
+                    <th><?= __('ID') ?></th>
+                    <td><?= h($socialMediaType->id) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Name') ?></th>
                     <td><?= h($socialMediaType->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($socialMediaType->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Creator') ?></th>
-                    <td><?= $socialMediaType->creator === null ? '' : $this->Number->format($socialMediaType->creator) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modifier') ?></th>
-                    <td><?= $socialMediaType->modifier === null ? '' : $this->Number->format($socialMediaType->modifier) ?></td>
+                    <td><?= $socialMediaType->has('social_media_type_creator') ? $this->Html->link($socialMediaType->social_media_type_creator->username, ['controller' => 'Users', 'action' => 'view', $socialMediaType->social_media_type_creator->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($socialMediaType->created) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($socialMediaType->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modifier') ?></th>
+                    <td><?= $socialMediaType->has('social_media_type_modifier') ? $this->Html->link($socialMediaType->social_media_type_modifier->username, ['controller' => 'Users', 'action' => 'view', $socialMediaType->social_media_type_modifier->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($socialMediaType->modified) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($socialMediaType->modified) ?></td>
                 </tr>
             </table>
             <div class="text">

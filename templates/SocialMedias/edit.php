@@ -10,11 +10,14 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php //TODO check for admin usertype
+            /*
             <?= $this->Form->postLink(
                 __('Delete'),
                 ['action' => 'delete', $socialMedia->id],
                 ['confirm' => __('Are you sure you want to delete # {0}?', $socialMedia->id), 'class' => 'side-nav-item']
             ) ?>
+            */ ?>
             <?= $this->Html->link(__('List Social Medias'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
@@ -24,12 +27,15 @@
             <fieldset>
                 <legend><?= __('Edit Social Media') ?></legend>
                 <?php
-                    echo $this->Form->control('person_id', ['options' => $people]);
-                    echo $this->Form->control('social_media_type_id', ['options' => $socialMediaTypes]);
+                    echo $this->Form->control('person_id', ['options' => $people, 'empty' => true]);
+                    echo $this->Form->control('social_media_type_id', ['options' => $socialMediaTypes, 'empty' => true]);
                     echo $this->Form->control('handle');
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
                     echo $this->Form->control('notes');
+                    //TODO check for admin usertype
+                    echo $this->Form->control('creator', ['options' => $users, 'empty' => true]);
+                    echo $this->Form->control('created');
+                    echo $this->Form->control('modifier', ['options' => $users, 'empty' => true]);
+                    echo $this->Form->control('modified');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

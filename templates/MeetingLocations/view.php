@@ -8,9 +8,13 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php //TODO Check for serving one usertype ?>
             <?= $this->Html->link(__('Edit Meeting Location'), ['action' => 'edit', $meetingLocation->id], ['class' => 'side-nav-item']) ?>
+            <?php //TODO Check for admin usertype ?>
             <?= $this->Form->postLink(__('Delete Meeting Location'), ['action' => 'delete', $meetingLocation->id], ['confirm' => __('Are you sure you want to delete # {0}?', $meetingLocation->id), 'class' => 'side-nav-item']) ?>
+            <?php //TODO available for steward and above ?>
             <?= $this->Html->link(__('List Meeting Locations'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?php //TODO check for serving one usertype ?>
             <?= $this->Html->link(__('New Meeting Location'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
@@ -19,36 +23,16 @@
             <h3><?= h($meetingLocation->name) ?></h3>
             <table>
                 <tr>
+                    <th><?= __('ID') ?></th>
+                    <td><?= h($meetingLocation->id) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Name') ?></th>
                     <td><?= h($meetingLocation->name) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Address') ?></th>
-                    <td><?= $meetingLocation->has('address') ? $this->Html->link($meetingLocation->address->id, ['controller' => 'Addresses', 'action' => 'view', $meetingLocation->address->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($meetingLocation->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Creator') ?></th>
-                    <td><?= $this->Number->format($meetingLocation->creator) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modifier') ?></th>
-                    <td><?= $this->Number->format($meetingLocation->modifier) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Notes') ?></th>
-                    <td><?= h($meetingLocation->notes) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($meetingLocation->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($meetingLocation->modified) ?></td>
+                    <td><?= $meetingLocation->has('address') ? $this->Html->link($meetingLocation->address->full_address, ['controller' => 'Addresses', 'action' => 'view', $meetingLocation->address->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Active') ?></th>
@@ -57,6 +41,27 @@
                 <tr>
                     <th><?= __('Notify') ?></th>
                     <td><?= $meetingLocation->notify ? __('Yes') : __('No'); ?></td>
+                </tr>
+                <?php //TODO Check for serving one or admin usertype?>
+                <tr>
+                    <th><?= __('Notes') ?></th>
+                    <td><?= h($meetingLocation->notes) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Creator') ?></th>
+                    <td><?= $meetingLocation->has('meeting_location_creator') ? $this->Html->link($meetingLocation->meeting_location_creator->username, ['controller' => 'Users', 'action' => 'view', $meetingLocation->meeting_location_creator->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= $this->Timezone->converted_timezone($meetingLocation->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modifier') ?></th>
+                    <td><?= $meetingLocation->has('meeting_location_modifier') ? $this->Html->link($meetingLocation->meeting_location_modifier->username, ['controller' => 'Users', 'action' => 'view', $meetingLocation->meeting_location_modifier->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= $this->Timezone->converted_timezone($meetingLocation->modified) ?></td>
                 </tr>
             </table>
             <div class="related">

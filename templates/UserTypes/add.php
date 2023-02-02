@@ -19,8 +19,6 @@
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('description');
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

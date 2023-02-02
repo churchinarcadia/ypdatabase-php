@@ -21,8 +21,6 @@
                 <?php
                     echo $this->Form->control('meeting_id', ['options' => $meetings]);
                     echo $this->Form->control('person_id', ['options' => $people]);
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

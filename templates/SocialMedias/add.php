@@ -22,8 +22,6 @@
                     echo $this->Form->control('person_id', ['options' => $people]);
                     echo $this->Form->control('social_media_type_id', ['options' => $socialMediaTypes]);
                     echo $this->Form->control('handle');
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
                     echo $this->Form->control('notes');
                 ?>
             </fieldset>

@@ -15,6 +15,7 @@
                     <th><?= $this->Paginator->sort('person_id') ?></th>
                     <th><?= $this->Paginator->sort('social_media_type_id') ?></th>
                     <th><?= $this->Paginator->sort('handle') ?></th>
+                    <?php //TODO check for admin usertype ?>
                     <th><?= $this->Paginator->sort('creator') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modifier') ?></th>
@@ -25,18 +26,22 @@
             <tbody>
                 <?php foreach ($socialMedias as $socialMedia): ?>
                 <tr>
-                    <td><?= $this->Number->format($socialMedia->id) ?></td>
-                    <td><?= $socialMedia->has('person') ? $this->Html->link($socialMedia->person->id, ['controller' => 'People', 'action' => 'view', $socialMedia->person->id]) : '' ?></td>
+                    <td><?= h($socialMedia->id) ?></td>
+                    <td><?= $socialMedia->has('person') ? $this->Html->link($socialMedia->person->full_name, ['controller' => 'People', 'action' => 'view', $socialMedia->person->id]) : '' ?></td>
                     <td><?= $socialMedia->has('social_media_type') ? $this->Html->link($socialMedia->social_media_type->name, ['controller' => 'SocialMediaTypes', 'action' => 'view', $socialMedia->social_media_type->id]) : '' ?></td>
                     <td><?= h($socialMedia->handle) ?></td>
-                    <td><?= $this->Number->format($socialMedia->creator) ?></td>
-                    <td><?= h($socialMedia->created) ?></td>
-                    <td><?= $this->Number->format($socialMedia->modifier) ?></td>
-                    <td><?= h($socialMedia->modified) ?></td>
+                    <?php //TODO check for admin usertype ?>
+                    <td><?= $socialMedia->has('social_media_creator') ? $this->Html->link($socialMedia->social_media_creator->username, ['controller' => 'Users', 'action' => 'view', $socialMedia->social_media_creator->id]) : '' ?></td>
+                    <td><?= $this->Timezone->converted_timezone($socialMedia->created) ?></td>
+                    <td><?= $socialMedia->has('social_media_modifier') ? $this->Html->link($socialMedia->social_media_modifier->username, ['controller' => 'Users', 'action' => 'view', $socialMedia->social_media_modifier->id]) : '' ?></td>
+                    <td><?= $this->Timezone->converted_timezone($socialMedia->modified) ?></td>
+                    <?php //TODO check for steward usertype or higher ?>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $socialMedia->id]) ?>
+                        <?php //TODO check for serving one or admin usertype ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $socialMedia->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $socialMedia->id], ['confirm' => __('Are you sure you want to delete # {0}?', $socialMedia->id)]) ?>
+                        <?php //TODO check for admin usertype
+                        //<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $socialMedia->id], ['confirm' => __('Are you sure you want to delete # {0}?', $socialMedia->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

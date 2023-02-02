@@ -8,9 +8,13 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php //TODO check for serving one or admin usertype ?>
             <?= $this->Html->link(__('Edit Person'), ['action' => 'edit', $person->id], ['class' => 'side-nav-item']) ?>
+            <?php //TODO check for admin usertype ?>
             <?= $this->Form->postLink(__('Delete Person'), ['action' => 'delete', $person->id], ['confirm' => __('Are you sure you want to delete # {0}?', $person->id), 'class' => 'side-nav-item']) ?>
+            <?php //TODO check for steward usertype or above ?>
             <?= $this->Html->link(__('List People'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?php //TODO check for serving one or admin usertype ?>
             <?= $this->Html->link(__('New Person'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
@@ -18,6 +22,10 @@
         <div class="people view content">
             <h3><?= h($person->id) ?></h3>
             <table>
+                <tr>
+                    <th><?= __('ID') ?></th>
+                    <td><?= h($person->id) ?></td>
+                </tr>
                 <tr>
                     <th><?= __('First Name') ?></th>
                     <td><?= h($person->first_name) ?></td>
@@ -35,6 +43,10 @@
                     <td><?= h($person->gender) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('District') ?></th>
+                    <td><?= $this->Number->format($person->district) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Mobile Phone') ?></th>
                     <td><?= h($person->mobile_phone) ?></td>
                 </tr>
@@ -50,45 +62,22 @@
                     <th><?= __('Home Phone') ?></th>
                     <td><?= h($person->home_phone) ?></td>
                 </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($person->id) ?></td>
-                </tr>
+                <?php //TODO change to grade ?>
                 <tr>
                     <th><?= __('Hs Grad Year') ?></th>
                     <td><?= $this->Number->format($person->hs_grad_year) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Address Id') ?></th>
-                    <td><?= $this->Number->format($person->address_id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('District') ?></th>
-                    <td><?= $this->Number->format($person->district) ?></td>
+                    <th><?= __('Address') ?></th>
+                    <td><?= $person->has('address') ? $this->Html->link($person->address->full_address, ['controller' => 'Addresses', 'action' => 'view', $person->address->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Father') ?></th>
-                    <td><?= $this->Number->format($person->father) ?></td>
+                    <td><?= $person->has('father') ? $this->Html->link($person->father->full_name, ['controller' => 'People', 'action' => 'view', $person->father->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Mother') ?></th>
-                    <td><?= $this->Number->format($person->mother) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Creator') ?></th>
-                    <td><?= $this->Number->format($person->creator) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modifier') ?></th>
-                    <td><?= $this->Number->format($person->modifier) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($person->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($person->modified) ?></td>
+                    <td><?= $person->has('mother') ? $this->Html->link($person->mother->full_name, ['controller' => 'People', 'action' => 'view', $person->mother->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Baptized') ?></th>
@@ -98,6 +87,22 @@
                     <th><?= __('Active') ?></th>
                     <td><?= $person->active ? __('Yes') : __('No'); ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Creator') ?></th>
+                    <td><?= $person->has('person_creator') ? $this->Html->link($person->person_creator->full_name, ['controller' => 'Users', 'action' => 'view', $person->person_creator->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= $this->Timezone->converted_timezone($person->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modifier') ?></th>
+                    <td><?= $person->has('person_modifier') ? $this->Html->link($person->person_modifier->full_name, ['controller' => 'Users', 'action' => 'view', $person->person_modifier->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= $this->Timezone->converted_timezone($person->modified) ?></td>
+                </tr>
             </table>
             <div class="text">
                 <strong><?= __('Notes') ?></strong>
@@ -105,6 +110,7 @@
                     <?= $this->Text->autoParagraph(h($person->notes)); ?>
                 </blockquote>
             </div>
+            <?php //TODO check for serving one or admin usertype ?>
             <div class="text">
                 <strong><?= __('Internal Notes') ?></strong>
                 <blockquote>

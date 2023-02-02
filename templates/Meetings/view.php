@@ -8,9 +8,13 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php //TODO check for serving one or admin usertype ?>
             <?= $this->Html->link(__('Edit Meeting'), ['action' => 'edit', $meeting->id], ['class' => 'side-nav-item']) ?>
+            <?php //TODO check for admin usertype ?>
             <?= $this->Form->postLink(__('Delete Meeting'), ['action' => 'delete', $meeting->id], ['confirm' => __('Are you sure you want to delete # {0}?', $meeting->id), 'class' => 'side-nav-item']) ?>
+            <?php //TODO check for steward or above usertype ?>
             <?= $this->Html->link(__('List Meetings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?php //TODO check for serving one usertype ?>
             <?= $this->Html->link(__('New Meeting'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
@@ -19,24 +23,8 @@
             <h3><?= h($meeting->id) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Meeting Type') ?></th>
-                    <td><?= $meeting->has('meeting_type') ? $this->Html->link($meeting->meeting_type->name, ['controller' => 'MeetingTypes', 'action' => 'view', $meeting->meeting_type->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($meeting->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Meeting Location Id') ?></th>
-                    <td><?= $this->Number->format($meeting->meeting_location_id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Creator') ?></th>
-                    <td><?= $this->Number->format($meeting->creator) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modifier') ?></th>
-                    <td><?= $this->Number->format($meeting->modifier) ?></td>
+                    <th><?= __('ID') ?></th>
+                    <td><?= h($meeting->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Date') ?></th>
@@ -51,12 +39,28 @@
                     <td><?= h($meeting->end_time) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Meeting Type') ?></th>
+                    <td><?= $meeting->has('meeting_type') ? $this->Html->link($meeting->meeting_type->name, ['controller' => 'MeetingTypes', 'action' => 'view', $meeting->meeting_type->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Meeting Location') ?></th>
+                    <td><?= $meeting->has('meeting_location') ? $this->Html->link($meeting->meeting_location->name, ['controller' => 'MeetingLocations', 'action' => 'view', $meeting->meeting_location->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Creator') ?></th>
+                    <td><?= $meeting->has('meeting_creator') ? $this->Html->link($meeting->meeting_creator->username, ['controller' => 'Users', 'action' => 'view', $meeting->meeting_creator->id]) : '' ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($meeting->created) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($meeting->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modifier') ?></th>
+                    <td><?= $meeting->has('meeting_modifier') ? $this->Html->link($meeting->meeting_modifier->username, ['controller' => 'Users', 'action' => 'view', $meeting->meeting_modifier->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($meeting->modified) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($meeting->modified) ?></td>
                 </tr>
             </table>
             <div class="related">

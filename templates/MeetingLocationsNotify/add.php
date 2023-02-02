@@ -21,11 +21,10 @@
                 <?php
                     echo $this->Form->control('meeting_location_id', ['options' => $meetingLocations]);
                     echo $this->Form->control('person_id', ['options' => $people]);
-                    echo $this->Form->control('creator');
-                    echo $this->Form->control('modifier');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
+            <?php //TODO add add and add another button ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

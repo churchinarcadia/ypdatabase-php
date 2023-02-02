@@ -8,9 +8,12 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php //TODO check for admin usertype ?>
             <?= $this->Html->link(__('Edit Meeting Type'), ['action' => 'edit', $meetingType->id], ['class' => 'side-nav-item']) ?>
             <?= $this->Form->postLink(__('Delete Meeting Type'), ['action' => 'delete', $meetingType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $meetingType->id), 'class' => 'side-nav-item']) ?>
+            <?php //TODO check for serving one or admin usertype ?>
             <?= $this->Html->link(__('List Meeting Types'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?php //TODO check for admin usertype ?>
             <?= $this->Html->link(__('New Meeting Type'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
@@ -19,28 +22,28 @@
             <h3><?= h($meetingType->name) ?></h3>
             <table>
                 <tr>
+                    <th><?= __('ID') ?></th>
+                    <td><?= h($meetingType->id) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Name') ?></th>
                     <td><?= h($meetingType->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($meetingType->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Creator') ?></th>
-                    <td><?= $this->Number->format($meetingType->creator) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modifier') ?></th>
-                    <td><?= $this->Number->format($meetingType->modifier) ?></td>
+                    <td><?= $meetingType->has('meeting_type_creator') ? $this->Html->link($meetingType->meeting_type_creator->username, ['controller' => 'Users', 'action' => 'view', $meetingType->meeting_type_creator->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($meetingType->created) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($meetingType->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modifier') ?></th>
+                    <td><?= $meetingType->has('meeting_type_modifier') ? $this->Html->link($meetingType->meeting_type_modifier->username, ['controller' => 'Users', 'action' => 'view', $meetingType->meeting_type_modifier->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($meetingType->modified) ?></td>
+                    <td><?= $this->Timezone->converted_timezone($meetingType->modified) ?></td>
                 </tr>
             </table>
             <div class="text">
