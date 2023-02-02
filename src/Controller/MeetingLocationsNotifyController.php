@@ -18,10 +18,21 @@ class MeetingLocationsNotifyController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['MeetingLocations', 'People'],
-        ];
-        $meetingLocationsNotify = $this->paginate($this->MeetingLocationsNotify);
+        $meetingLocationsNotify_query = $this->MeetingLocationsNotify->find(
+            'all',
+            [
+                'contain' => [
+                    'MeetingLocations',
+                    'People',
+                    'MeetingLocationsNotifyCreators',
+                    'MeetingLocationsNotifyModifiers'
+                ]
+            ]
+        );
+
+        $this->Authorize->authorize($meetingLocationsNotify_query);
+
+        $meetingLocationsNotify = $this->paginate($meetingLocationsNotify_query);
 
         $this->set(compact('meetingLocationsNotify'));
     }
@@ -36,8 +47,15 @@ class MeetingLocationsNotifyController extends AppController
     public function view($id = null)
     {
         $meetingLocationsNotify = $this->MeetingLocationsNotify->get($id, [
-            'contain' => ['MeetingLocations', 'People'],
+            'contain' => [
+                'MeetingLocations',
+                'People',
+                'MeetingLocationsNotifyCreators',
+                'MeetingLocationsNotifyModifiers'
+            ],
         ]);
+
+        $this->Authorization->authorize($meetingLocationsNotify);
 
         $this->set(compact('meetingLocationsNotify'));
     }
@@ -50,6 +68,9 @@ class MeetingLocationsNotifyController extends AppController
     public function add()
     {
         $meetingLocationsNotify = $this->MeetingLocationsNotify->newEmptyEntity();
+
+        $this->Authorization->authorize($meetingLocationsNotify);
+
         if ($this->request->is('post')) {
             $meetingLocationsNotify = $this->MeetingLocationsNotify->patchEntity($meetingLocationsNotify, $this->request->getData());
             if ($this->MeetingLocationsNotify->save($meetingLocationsNotify)) {
@@ -76,6 +97,9 @@ class MeetingLocationsNotifyController extends AppController
         $meetingLocationsNotify = $this->MeetingLocationsNotify->get($id, [
             'contain' => [],
         ]);
+
+        $this->Authorization->authorize($meetingLocationsNotify);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $meetingLocationsNotify = $this->MeetingLocationsNotify->patchEntity($meetingLocationsNotify, $this->request->getData());
             if ($this->MeetingLocationsNotify->save($meetingLocationsNotify)) {
@@ -87,7 +111,8 @@ class MeetingLocationsNotifyController extends AppController
         }
         $meetingLocations = $this->MeetingLocationsNotify->MeetingLocations->find('list', ['limit' => 200])->all();
         $people = $this->MeetingLocationsNotify->People->find('list', ['limit' => 200])->all();
-        $this->set(compact('meetingLocationsNotify', 'meetingLocations', 'people'));
+        $users = $this->MeetingLocationsNotify->MeetingLocationsNotifyCreators->find('list', ['limit' => 200])->all();
+        $this->set(compact('meetingLocationsNotify', 'meetingLocations', 'people', 'users'));
     }
 
     /**
@@ -101,6 +126,9 @@ class MeetingLocationsNotifyController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $meetingLocationsNotify = $this->MeetingLocationsNotify->get($id);
+
+        $this->Authorization->authorize($meetingLocationsNotify);
+        
         if ($this->MeetingLocationsNotify->delete($meetingLocationsNotify)) {
             $this->Flash->success(__('The meeting locations notify has been deleted.'));
         } else {

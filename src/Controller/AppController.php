@@ -18,6 +18,9 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 
+use Cake\Core\Configure;
+use Cake\Event\EventInterface;
+
 /**
  * Application Controller
  *
@@ -28,6 +31,13 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
+    /**
+     * Client timezone
+     * 
+     * @var string
+     */
+    protected $timezone;
+    
     /**
      * Initialization hook method.
      *
@@ -49,5 +59,27 @@ class AppController extends Controller
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+
+        $this->loadComponent('Authentication.Authentication');
+        $this->loadComponent('Authorization.Authorization');
+
+        /**
+         * Reads timezone stored from cookie
+         * If timezone in profile is set, that is used.
+         * Otherwise timezone is guessed from user's IP address.
+         */
+        $this->timezone = Configure::read('App.timezone');
+    }
+
+    /**
+     * beforeRender
+     * 
+     * @param \Cake\Event\Event $event An Event Interface
+     * @return void
+     */
+    public function beforeRender(EventInterface $event)
+    {
+        $timezone = $this->timezone;
+        $this->set(compact('timezone'));
     }
 }

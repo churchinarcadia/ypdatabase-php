@@ -18,10 +18,21 @@ class MeetingPeopleController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Meetings', 'People'],
-        ];
-        $meetingPeople = $this->paginate($this->MeetingPeople);
+        $meetingPeople_query = $this->MeetingPeople->find(
+            'all',
+            [
+                'contain' => [
+                    'Meetings',
+                    'People',
+                    'MeetingPeopleCreators',
+                    'MeetingPeopleModifier'
+                ]
+            ]
+        );
+
+        $this->Authorization->authorize($meetingPeople_query);
+
+        $meetingPeople = $this->paginate($meetingPeople_query);
 
         $this->set(compact('meetingPeople'));
     }
@@ -36,8 +47,15 @@ class MeetingPeopleController extends AppController
     public function view($id = null)
     {
         $meetingPerson = $this->MeetingPeople->get($id, [
-            'contain' => ['Meetings', 'People'],
+            'contain' => [
+                'Meetings',
+                'People',
+                'MeetingPeopleCreators',
+                'MeetingPeopleModifiers'
+            ],
         ]);
+
+        $this->Authorization->authorize($meetingPerson);
 
         $this->set(compact('meetingPerson'));
     }
@@ -50,6 +68,9 @@ class MeetingPeopleController extends AppController
     public function add()
     {
         $meetingPerson = $this->MeetingPeople->newEmptyEntity();
+
+        $this->Authorization->authorize($meetingPerson);
+
         if ($this->request->is('post')) {
             $meetingPerson = $this->MeetingPeople->patchEntity($meetingPerson, $this->request->getData());
             if ($this->MeetingPeople->save($meetingPerson)) {
@@ -76,6 +97,9 @@ class MeetingPeopleController extends AppController
         $meetingPerson = $this->MeetingPeople->get($id, [
             'contain' => [],
         ]);
+
+        $this->Authorization->authorize($meetingPerson);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $meetingPerson = $this->MeetingPeople->patchEntity($meetingPerson, $this->request->getData());
             if ($this->MeetingPeople->save($meetingPerson)) {
@@ -87,7 +111,8 @@ class MeetingPeopleController extends AppController
         }
         $meetings = $this->MeetingPeople->Meetings->find('list', ['limit' => 200])->all();
         $people = $this->MeetingPeople->People->find('list', ['limit' => 200])->all();
-        $this->set(compact('meetingPerson', 'meetings', 'people'));
+        $user = $this->MeetingPeople->MeetingPeopleCreators->find('list', ['limit' => 200])->all();
+        $this->set(compact('meetingPerson', 'meetings', 'people', 'user'));
     }
 
     /**
@@ -101,6 +126,9 @@ class MeetingPeopleController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $meetingPerson = $this->MeetingPeople->get($id);
+
+        $this->Authorization->authorize($meetingPerson);
+
         if ($this->MeetingPeople->delete($meetingPerson)) {
             $this->Flash->success(__('The meeting person has been deleted.'));
         } else {

@@ -18,10 +18,20 @@ class MeetingLocationsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Addresses'],
-        ];
-        $meetingLocations = $this->paginate($this->MeetingLocations);
+        $meetingLocations_query = $this->MeetingLocations->find(
+            'all',
+            [
+                'contain' => [
+                    'Addresses',
+                    'MeetingLocationCreators',
+                    'MeetingLocationModifiers',
+                ]
+            ]
+        );
+
+        $this->Authorization->authorize($meetingLocations_query);
+
+        $meetingLocations = $this->paginate($meetingLocations_query);
 
         $this->set(compact('meetingLocations'));
     }
@@ -36,8 +46,16 @@ class MeetingLocationsController extends AppController
     public function view($id = null)
     {
         $meetingLocation = $this->MeetingLocations->get($id, [
-            'contain' => ['Addresses', 'MeetingLocationsNotify', 'Meetings'],
+            'contain' => [
+                'Addresses',
+                'MeetingLocationsNotify',
+                'Meetings',
+                'MeetingLocationCreators',
+                'MeetingLocationModifiers',
+            ],
         ]);
+
+        $this->Authorization->authorize($meetingLocation);
 
         $this->set(compact('meetingLocation'));
     }
@@ -50,6 +68,9 @@ class MeetingLocationsController extends AppController
     public function add()
     {
         $meetingLocation = $this->MeetingLocations->newEmptyEntity();
+
+        $this->Authorization->authorize($meetingLocation);
+
         if ($this->request->is('post')) {
             $meetingLocation = $this->MeetingLocations->patchEntity($meetingLocation, $this->request->getData());
             if ($this->MeetingLocations->save($meetingLocation)) {
@@ -60,6 +81,7 @@ class MeetingLocationsController extends AppController
             $this->Flash->error(__('The meeting location could not be saved. Please, try again.'));
         }
         $addresses = $this->MeetingLocations->Addresses->find('list', ['limit' => 200])->all();
+
         $this->set(compact('meetingLocation', 'addresses'));
     }
 
@@ -75,6 +97,9 @@ class MeetingLocationsController extends AppController
         $meetingLocation = $this->MeetingLocations->get($id, [
             'contain' => [],
         ]);
+
+        $this->Authorization->authorize($meetingLocation);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $meetingLocation = $this->MeetingLocations->patchEntity($meetingLocation, $this->request->getData());
             if ($this->MeetingLocations->save($meetingLocation)) {
@@ -85,7 +110,9 @@ class MeetingLocationsController extends AppController
             $this->Flash->error(__('The meeting location could not be saved. Please, try again.'));
         }
         $addresses = $this->MeetingLocations->Addresses->find('list', ['limit' => 200])->all();
-        $this->set(compact('meetingLocation', 'addresses'));
+        $users = $this->MeetingLocations->MeetingLocationCreators->find('list', ['limit' => 200])->all();
+
+        $this->set(compact('meetingLocation', 'addresses', 'users'));
     }
 
     /**
@@ -99,6 +126,9 @@ class MeetingLocationsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $meetingLocation = $this->MeetingLocations->get($id);
+
+        $this->Authorization->authorize($meetingLocation);
+
         if ($this->MeetingLocations->delete($meetingLocation)) {
             $this->Flash->success(__('The meeting location has been deleted.'));
         } else {
