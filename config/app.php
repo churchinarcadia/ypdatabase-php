@@ -236,8 +236,8 @@ return [
             /*
              * It is recommended to set these options through your environment or app_local.php
              */
-            //'username' => null,
-            //'password' => null,
+            'username' => null,
+            'password' => null,
             'client' => null,
             'tls' => false,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
@@ -451,21 +451,4 @@ return [
         'defaults' => 'php',
     ],
 
-    /*
-     * Email configuration.
-     *
-     * Host and credential configuration in case you are using SmtpTransport
-     *
-     * See app.php for more configuration options.
-     */
-    'EmailTransport' => [
-        'default' => [
-            'host' => 'localhost',
-            'port' => 25,
-            'username' => null,
-            'password' => null,
-            'client' => null,
-            'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
-        ],
-    ],
 ];
