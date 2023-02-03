@@ -17,4 +17,9 @@ class MeetingLocationsTablePolicy
     {
         return true;
     }
+
+    public function scopeIndex(IdentityInterface $user, Query $query)
+    {
+        return true;
+    }
 }

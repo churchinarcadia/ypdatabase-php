@@ -17,4 +17,9 @@ class MeetingsTablePolicy
     {
         return true;
     }
+
+    public function scopeIndex(IdentityInterface $user, Query $query)
+    {
+        return true;
+    }
 }
