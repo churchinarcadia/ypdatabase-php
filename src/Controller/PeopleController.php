@@ -18,7 +18,45 @@ class PeopleController extends AppController
      */
     public function index()
     {
-        $people = $this->paginate($this->People);
+        //TODO add parameter and filter by district or active/inactive
+        /**
+         * TODO add calculation for:
+         * 1) if person has user
+         * 
+         */
+
+        $people_query = $this->People->find(
+            'all',
+            [
+                'contain' => [
+                    'Addresses' => [
+                        'MeetingLocations'
+                    ],
+                    'SocialMedias' => [
+                        'SocialMediaTypes'
+                    ],
+                    'Fathers' => [
+                        'SocialMedias' => [
+                            'SocialMediaTypes'
+                        ]
+                    ],
+                    'Mothers' => [
+                        'SocialMedias' => [
+                            'SocialMediaTypes'
+                        ]
+                    ],
+                    'PeopleCreators',
+                    'PeopleModifiers',
+                    'Users' => [
+                        'UserTypes'
+                    ]
+                ]
+            ]
+        );
+
+        $this->Authorization->authorize($people_query);
+        
+        $people = $this->paginate($people_query);
 
         $this->set(compact('people'));
     }
@@ -33,8 +71,22 @@ class PeopleController extends AppController
     public function view($id = null)
     {
         $person = $this->People->get($id, [
-            'contain' => ['MeetingPeople', 'Users'],
+            'contain' => [
+                'MeetingPeople',
+                'Users',
+                'Addresses' => [
+                    'MeetingLocations'
+                ],
+                'SocialMedias',
+                'Fathers',
+                'Mothers',
+                'PeopleCreators',
+                'PeopleModifiers',
+                'MeetingLocationNotify',
+            ],
         ]);
+
+        $this->Authorization->authorize($person);
 
         $this->set(compact('person'));
     }
@@ -47,6 +99,9 @@ class PeopleController extends AppController
     public function add()
     {
         $person = $this->People->newEmptyEntity();
+
+        $this->Authorization->authorize($person);
+
         if ($this->request->is('post')) {
             $person = $this->People->patchEntity($person, $this->request->getData());
             if ($this->People->save($person)) {
@@ -56,7 +111,9 @@ class PeopleController extends AppController
             }
             $this->Flash->error(__('The person could not be saved. Please, try again.'));
         }
-        $this->set(compact('person'));
+        $addresses = $this->People->Addresses->find('list', ['limit' => 200])->all();
+        $people = $this->People->find('list', ['limit' => 200])->all();
+        $this->set(compact('person', 'addresses'));
     }
 
     /**
@@ -71,6 +128,9 @@ class PeopleController extends AppController
         $person = $this->People->get($id, [
             'contain' => [],
         ]);
+
+        $this->Authorization->authorize($person);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $person = $this->People->patchEntity($person, $this->request->getData());
             if ($this->People->save($person)) {
@@ -80,7 +140,10 @@ class PeopleController extends AppController
             }
             $this->Flash->error(__('The person could not be saved. Please, try again.'));
         }
-        $this->set(compact('person'));
+        $addresses = $this->People->Addresses->find('list', ['limit' => 200])->all();
+        $people = $this->People->find('list', ['limit' => 200])->all();
+        $users = $this->People->PeopleCreators->find('list', ['limit' => 200])->all();
+        $this->set(compact('person', 'addresses', 'users'));
     }
 
     /**
@@ -94,6 +157,9 @@ class PeopleController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $person = $this->People->get($id);
+        
+        $this->Authorization->authorize($person);
+
         if ($this->People->delete($person)) {
             $this->Flash->success(__('The person has been deleted.'));
         } else {

@@ -18,7 +18,20 @@ class UserTypesController extends AppController
      */
     public function index()
     {
-        $userTypes = $this->paginate($this->UserTypes);
+        $userTypes_query = $this->UserTypes->find(
+            'all',
+            [
+                'contain' => [
+                    'Users',
+                    'UserTypeCreators',
+                    'UserTypeModifiers'
+                ]
+            ]
+        );
+
+        $this->Authorization->authorize($userTypes_query);
+
+        $userTypes = $this->paginate($userTypes_query);
 
         $this->set(compact('userTypes'));
     }
@@ -33,8 +46,14 @@ class UserTypesController extends AppController
     public function view($id = null)
     {
         $userType = $this->UserTypes->get($id, [
-            'contain' => ['Users'],
+            'contain' => [
+                'Users',
+                'UserTypeCreators',
+                'UserTypeModifiers'
+            ],
         ]);
+
+        $this->Authorization->authorize($userType);
 
         $this->set(compact('userType'));
     }
@@ -47,6 +66,9 @@ class UserTypesController extends AppController
     public function add()
     {
         $userType = $this->UserTypes->newEmptyEntity();
+
+        $this->Authorization->authorize($userType);
+
         if ($this->request->is('post')) {
             $userType = $this->UserTypes->patchEntity($userType, $this->request->getData());
             if ($this->UserTypes->save($userType)) {
@@ -71,6 +93,9 @@ class UserTypesController extends AppController
         $userType = $this->UserTypes->get($id, [
             'contain' => [],
         ]);
+
+        $this->Authorization->authorize($userType);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $userType = $this->UserTypes->patchEntity($userType, $this->request->getData());
             if ($this->UserTypes->save($userType)) {
@@ -80,6 +105,7 @@ class UserTypesController extends AppController
             }
             $this->Flash->error(__('The user type could not be saved. Please, try again.'));
         }
+        $users = $this->UserTypes->UserTypeCreators->find('list', ['limit' => 200])->all();
         $this->set(compact('userType'));
     }
 
@@ -94,6 +120,9 @@ class UserTypesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $userType = $this->UserTypes->get($id);
+
+        $this->Authorization->authorize($userType);
+
         if ($this->UserTypes->delete($userType)) {
             $this->Flash->success(__('The user type has been deleted.'));
         } else {

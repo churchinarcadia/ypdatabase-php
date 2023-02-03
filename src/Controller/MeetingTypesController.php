@@ -18,7 +18,19 @@ class MeetingTypesController extends AppController
      */
     public function index()
     {
-        $meetingTypes = $this->paginate($this->MeetingTypes);
+        $meetingTypes_query = $this->MeetingTypes->find(
+            'all',
+            [
+                'contain' => [
+                    'MeetingTypeCreators',
+                    'MeetingTypeModifiers'
+                ]
+            ]
+        );
+
+        $this->Authorization->authorize($meetingTypes_query);
+        
+        $meetingTypes = $this->paginate($meetingTypes_query);
 
         $this->set(compact('meetingTypes'));
     }
@@ -33,8 +45,14 @@ class MeetingTypesController extends AppController
     public function view($id = null)
     {
         $meetingType = $this->MeetingTypes->get($id, [
-            'contain' => ['Meetings'],
+            'contain' => [
+                'Meetings',
+                'MeetingTypeCreators',
+                'MeetingTypeModifiers'
+            ],
         ]);
+
+        $this->Authorization->authorize($meetingType);
 
         $this->set(compact('meetingType'));
     }
@@ -47,6 +65,9 @@ class MeetingTypesController extends AppController
     public function add()
     {
         $meetingType = $this->MeetingTypes->newEmptyEntity();
+
+        $this->Authorization->authorize($meetingType);
+
         if ($this->request->is('post')) {
             $meetingType = $this->MeetingTypes->patchEntity($meetingType, $this->request->getData());
             if ($this->MeetingTypes->save($meetingType)) {
@@ -71,6 +92,9 @@ class MeetingTypesController extends AppController
         $meetingType = $this->MeetingTypes->get($id, [
             'contain' => [],
         ]);
+
+        $this->Authorization->authorize($meetingType);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $meetingType = $this->MeetingTypes->patchEntity($meetingType, $this->request->getData());
             if ($this->MeetingTypes->save($meetingType)) {
@@ -80,7 +104,8 @@ class MeetingTypesController extends AppController
             }
             $this->Flash->error(__('The meeting type could not be saved. Please, try again.'));
         }
-        $this->set(compact('meetingType'));
+        $users = $this->MeetingTypes->MeetingTypeCreators->find('list', ['limit' => 200])->all();
+        $this->set(compact('meetingType', 'users'));
     }
 
     /**
@@ -94,6 +119,9 @@ class MeetingTypesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $meetingType = $this->MeetingTypes->get($id);
+
+        $this->Authorization->authorize($meetingType);
+        
         if ($this->MeetingTypes->delete($meetingType)) {
             $this->Flash->success(__('The meeting type has been deleted.'));
         } else {

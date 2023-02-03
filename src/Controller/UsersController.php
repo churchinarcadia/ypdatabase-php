@@ -11,6 +11,8 @@ namespace App\Controller;
  */
 class UsersController extends AppController
 {
+    //TODO add status choices
+    
     /**
      * Index method
      *
@@ -18,10 +20,21 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['People', 'UserTypes'],
-        ];
-        $users = $this->paginate($this->Users);
+        $users_query = $this->Users->find(
+            'all',
+            [
+                'contain' => [
+                    'People',
+                    'UserTypes',
+                    'UserCreators',
+                    'UserModifiers'
+                ]
+            ]
+        );
+
+        $this->Authorization->authorize($users_query);
+        
+        $users = $this->paginate($users_query);
 
         $this->set(compact('users'));
     }
@@ -36,8 +49,15 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['People', 'UserTypes'],
+            'contain' => [
+                'People',
+                'UserTypes',
+                'UserCreators',
+                'UserModifiers'
+            ],
         ]);
+
+        $this->Authorization->authorize($user);
 
         $this->set(compact('user'));
     }
@@ -50,6 +70,9 @@ class UsersController extends AppController
     public function add()
     {
         $user = $this->Users->newEmptyEntity();
+
+        $this->Authorization->authorize($user);
+
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -76,6 +99,9 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
+
+        $this->Authorization->authorize($user);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -87,7 +113,8 @@ class UsersController extends AppController
         }
         $people = $this->Users->People->find('list', ['limit' => 200])->all();
         $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200])->all();
-        $this->set(compact('user', 'people', 'userTypes'));
+        $users = $this->Users->find('list', ['limit' => 200])->all();
+        $this->set(compact('user', 'people', 'userTypes', 'users'));
     }
 
     /**
@@ -101,6 +128,9 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
+
+        $this->Authorization->authorize($user);
+
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {

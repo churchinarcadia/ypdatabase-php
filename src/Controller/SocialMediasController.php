@@ -18,10 +18,21 @@ class SocialMediasController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['People', 'SocialMediaTypes'],
-        ];
-        $socialMedias = $this->paginate($this->SocialMedias);
+        $socialMedias_query = $this->SocialMedias->find(
+            'all',
+            [
+                'contain' => [
+                    'SocialMediaTypes',
+                    'People',
+                    'SocialMediaCreators',
+                    'SocialMediaModifiers'
+                ]
+            ]
+        );
+
+        $this->Authorization->authorize($socialMedias_query);
+        
+        $socialMedias = $this->paginate($socialMedias_query);
 
         $this->set(compact('socialMedias'));
     }
@@ -36,8 +47,15 @@ class SocialMediasController extends AppController
     public function view($id = null)
     {
         $socialMedia = $this->SocialMedias->get($id, [
-            'contain' => ['People', 'SocialMediaTypes'],
+            'contain' => [
+                'People',
+                'SocialMediaTypes',
+                'SocialMediaCreators',
+                'SocialMediaModifiers'
+            ],
         ]);
+
+        $this->Authorization->authorize($socialMedia);
 
         $this->set(compact('socialMedia'));
     }
@@ -50,6 +68,9 @@ class SocialMediasController extends AppController
     public function add()
     {
         $socialMedia = $this->SocialMedias->newEmptyEntity();
+
+        $this->Authorization->authorize($socialMedia);
+
         if ($this->request->is('post')) {
             $socialMedia = $this->SocialMedias->patchEntity($socialMedia, $this->request->getData());
             if ($this->SocialMedias->save($socialMedia)) {
@@ -76,6 +97,9 @@ class SocialMediasController extends AppController
         $socialMedia = $this->SocialMedias->get($id, [
             'contain' => [],
         ]);
+
+        $this->Authorization->authorize($socialMedia);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $socialMedia = $this->SocialMedias->patchEntity($socialMedia, $this->request->getData());
             if ($this->SocialMedias->save($socialMedia)) {
@@ -87,7 +111,8 @@ class SocialMediasController extends AppController
         }
         $people = $this->SocialMedias->People->find('list', ['limit' => 200])->all();
         $socialMediaTypes = $this->SocialMedias->SocialMediaTypes->find('list', ['limit' => 200])->all();
-        $this->set(compact('socialMedia', 'people', 'socialMediaTypes'));
+        $users = $this->SocialMedias->SocialMediaCreators->find('list', ['limit' => 200])->all();
+        $this->set(compact('socialMedia', 'people', 'socialMediaTypes', 'users'));
     }
 
     /**
@@ -101,6 +126,9 @@ class SocialMediasController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $socialMedia = $this->SocialMedias->get($id);
+
+        $this->Authorization->authorize($socialMedia);
+
         if ($this->SocialMedias->delete($socialMedia)) {
             $this->Flash->success(__('The social media has been deleted.'));
         } else {

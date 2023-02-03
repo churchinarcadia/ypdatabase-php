@@ -18,7 +18,22 @@ class SocialMediaTypesController extends AppController
      */
     public function index()
     {
-        $socialMediaTypes = $this->paginate($this->SocialMediaTypes);
+        $socialMediaTypes_query = $this->SocialMediaTypes->find(
+            'all',
+            [
+                'contain' => [
+                    'SocialMedias' => [
+                        'People'
+                    ],
+                    'SocialMediaTypeCreators',
+                    'SocialMediaTypeModifiers'
+                ]
+            ]
+        );
+
+        $this->Authorization->authorize($socialMediaTypes_query);
+
+        $socialMediaTypes = $this->paginate($socialMediaTypes_query);
 
         $this->set(compact('socialMediaTypes'));
     }
@@ -33,9 +48,17 @@ class SocialMediaTypesController extends AppController
     public function view($id = null)
     {
         $socialMediaType = $this->SocialMediaTypes->get($id, [
-            'contain' => ['SocialMedias'],
+            'contain' => [
+                'SocialMedias' => [
+                    'People'
+                ],
+                'SocialMediaTypeCreators',
+                'SocialMediaTypeModifiers'
+            ],
         ]);
 
+        $this->Authorization->authorize($socialMediaType);
+        
         $this->set(compact('socialMediaType'));
     }
 
@@ -47,6 +70,9 @@ class SocialMediaTypesController extends AppController
     public function add()
     {
         $socialMediaType = $this->SocialMediaTypes->newEmptyEntity();
+
+        $this->Authorization->authorize($socialMediaType);
+
         if ($this->request->is('post')) {
             $socialMediaType = $this->SocialMediaTypes->patchEntity($socialMediaType, $this->request->getData());
             if ($this->SocialMediaTypes->save($socialMediaType)) {
@@ -71,6 +97,9 @@ class SocialMediaTypesController extends AppController
         $socialMediaType = $this->SocialMediaTypes->get($id, [
             'contain' => [],
         ]);
+
+        $this->Authorization->authorize($socialMediaType);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $socialMediaType = $this->SocialMediaTypes->patchEntity($socialMediaType, $this->request->getData());
             if ($this->SocialMediaTypes->save($socialMediaType)) {
@@ -80,7 +109,8 @@ class SocialMediaTypesController extends AppController
             }
             $this->Flash->error(__('The social media type could not be saved. Please, try again.'));
         }
-        $this->set(compact('socialMediaType'));
+        $users = $this->SocialMediaTypes->find('list', ['limit' => 200])->all();
+        $this->set(compact('socialMediaType', 'users'));
     }
 
     /**
@@ -94,6 +124,9 @@ class SocialMediaTypesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $socialMediaType = $this->SocialMediaTypes->get($id);
+
+        $this->Authorization->authorize($socialMediaType);
+
         if ($this->SocialMediaTypes->delete($socialMediaType)) {
             $this->Flash->success(__('The social media type has been deleted.'));
         } else {
