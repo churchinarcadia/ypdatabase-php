@@ -37,6 +37,21 @@ class AppController extends Controller
      * @var string
      */
     protected $timezone;
+
+    /**
+     * "Can" array
+     * Creates an array indicating if the user can add, edit, delete, or view
+     * Used to determine if relevant action buttons/links will be displayed to the user in the view
+     * Set only if a controller is loaded
+     * 
+     * @return array
+     */
+    protected $can;
+
+    if ($this->request->getParam('controller') != '' && $this->request->getParam('controller') != 'Pages') {
+        $user = $this->request->getAttribute('identity');
+        $can['add'] = $user->can('add');
+    }
     
     /**
      * Initialization hook method.
