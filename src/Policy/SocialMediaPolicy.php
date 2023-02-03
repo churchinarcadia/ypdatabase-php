@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Policy;
 
-use App\Model\Entity\SocialMedias;
+use App\Model\Entity\SocialMedia;
 use Authorization\IdentityInterface;
 
 use Authorization\Policy\BeforePolicyInterface;
@@ -11,9 +11,9 @@ use Authorization\Policy\BeforePolicyInterface;
 use App\Utility\PolicyFunctions;
 
 /**
- * SocialMedias policy
+ * SocialMedia policy
  */
-class SocialMediasPolicy
+class SocialMediaPolicy
 {
     /**
      * Defines a pre-authorization check.
@@ -40,13 +40,13 @@ class SocialMediasPolicy
     }
 
     /**
-     * Check if $user can add SocialMedias
+     * Check if $user can add SocialMedia
      *
      * @param \Authorization\IdentityInterface $user The user.
-     * @param \App\Model\Entity\SocialMedias $socialMedias
+     * @param \App\Model\Entity\SocialMedia $SocialMedia
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, SocialMedias $socialMedias)
+    public function canAdd(IdentityInterface $user, SocialMedia $SocialMedia)
     {
         /*
         $functions = new PolicyFunctions;
@@ -56,13 +56,13 @@ class SocialMediasPolicy
     }
 
     /**
-     * Check if $user can edit SocialMedias
+     * Check if $user can edit SocialMedia
      *
      * @param \Authorization\IdentityInterface $user The user.
-     * @param \App\Model\Entity\SocialMedias $socialMedias
+     * @param \App\Model\Entity\SocialMedia $SocialMedia
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, SocialMedias $socialMedias)
+    public function canEdit(IdentityInterface $user, SocialMedia $SocialMedia)
     {
         /*
         $functions = new PolicyFunctions;
@@ -72,13 +72,13 @@ class SocialMediasPolicy
     }
 
     /**
-     * Check if $user can delete SocialMedias
+     * Check if $user can delete SocialMedia
      *
      * @param \Authorization\IdentityInterface $user The user.
-     * @param \App\Model\Entity\SocialMedias $socialMedias
+     * @param \App\Model\Entity\SocialMedia $SocialMedia
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, SocialMedias $socialMedias)
+    public function canDelete(IdentityInterface $user, SocialMedia $SocialMedia)
     {
         //TODO check if deleting with foreignkey restrictions or forced cascade
         //Only allow forced cascade with admin roles.
@@ -90,13 +90,13 @@ class SocialMediasPolicy
     }
 
     /**
-     * Check if $user can view SocialMedias
+     * Check if $user can view SocialMedia
      *
      * @param \Authorization\IdentityInterface $user The user.
-     * @param \App\Model\Entity\SocialMedias $socialMedias
+     * @param \App\Model\Entity\SocialMedia $SocialMedia
      * @return bool
      */
-    public function canView(IdentityInterface $user, SocialMedias $socialMedias)
+    public function canView(IdentityInterface $user, SocialMedia $SocialMedia)
     {
         $functions = new PolicyFunctions;
 
