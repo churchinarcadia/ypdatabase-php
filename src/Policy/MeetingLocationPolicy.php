@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Policy;
 
-use App\Model\Entity\MeetingPerson;
+use App\Model\Entity\MeetingLocation;
 use Authorization\IdentityInterface;
 
 use Authorization\Policy\BeforePolicyInterface;
@@ -11,9 +11,9 @@ use Authorization\Policy\BeforePolicyInterface;
 use App\Utility\PolicyFunctions;
 
 /**
- * MeetingPerson policy
+ * MeetingLocation policy
  */
-class MeetingPersonPolicy
+class MeetingLocationPolicy
 {
     /**
      * Defines a pre-authorization check.
@@ -40,13 +40,13 @@ class MeetingPersonPolicy
     }
     
     /**
-     * Check if $user can add MeetingPerson
+     * Check if $user can add MeetingLocation
      *
      * @param \Authorization\IdentityInterface $user The user.
-     * @param \App\Model\Entity\MeetingPerson $meetingPerson
+     * @param \App\Model\Entity\MeetingLocation $MeetingLocation
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, MeetingPerson $meetingPerson)
+    public function canAdd(IdentityInterface $user, MeetingLocation $MeetingLocation)
     {
         /*
         $functions = new PolicyFunctions;
@@ -56,13 +56,13 @@ class MeetingPersonPolicy
     }
 
     /**
-     * Check if $user can edit MeetingPerson
+     * Check if $user can edit MeetingLocation
      *
      * @param \Authorization\IdentityInterface $user The user.
-     * @param \App\Model\Entity\MeetingPerson $meetingPerson
+     * @param \App\Model\Entity\MeetingLocation $MeetingLocation
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, MeetingPerson $meetingPerson)
+    public function canEdit(IdentityInterface $user, MeetingLocation $MeetingLocation)
     {
         /*
         $functions = new PolicyFunctions;
@@ -72,14 +72,16 @@ class MeetingPersonPolicy
     }
 
     /**
-     * Check if $user can delete MeetingPerson
+     * Check if $user can delete MeetingLocation
      *
      * @param \Authorization\IdentityInterface $user The user.
-     * @param \App\Model\Entity\MeetingPerson $meetingPerson
+     * @param \App\Model\Entity\MeetingLocation $MeetingLocation
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, MeetingPerson $meetingPerson)
+    public function canDelete(IdentityInterface $user, MeetingLocation $MeetingLocation)
     {
+        //TODO check if deleting with foreignkey restrictions or forced cascade
+        //Only allow forced cascade with admin roles.
         /*
         $functions = new PolicyFunctions;
 
@@ -88,18 +90,16 @@ class MeetingPersonPolicy
     }
 
     /**
-     * Check if $user can view MeetingPerson
+     * Check if $user can view MeetingLocation
      *
      * @param \Authorization\IdentityInterface $user The user.
-     * @param \App\Model\Entity\MeetingPerson $meetingPerson
+     * @param \App\Model\Entity\MeetingLocation $MeetingLocation
      * @return bool
      */
-    public function canView(IdentityInterface $user, MeetingPerson $meetingPerson)
+    public function canView(IdentityInterface $user, MeetingLocation $MeetingLocation)
     {
-        /*
         $functions = new PolicyFunctions;
 
-        return $functions->isUserAuthorized($user,[2]);
-        */
+        return $functions->isUserAuthorized($user,[3]);
     }
 }
