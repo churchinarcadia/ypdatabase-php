@@ -11,7 +11,16 @@ namespace App\Controller;
  */
 class UsersController extends AppController
 {
-    //TODO add status choices
+    /**
+     * User account statuses
+     * 
+     * @var array
+     */
+    private $statuses = [
+        'Pending',
+        'Approved',
+        'Denied',
+    ];
     
     /**
      * Index method
@@ -20,6 +29,8 @@ class UsersController extends AppController
      */
     public function index()
     {
+        //TODO add filter for active and approved accounts
+        
         $users_query = $this->Users->find(
             'all',
             [
@@ -69,6 +80,15 @@ class UsersController extends AppController
      */
     public function add()
     {
+        //TODO allow authenticated
+        //TODO when user account created, add user but set to pending and email administrators and email registrant
+        //TODO create approve method and include specific approve link in pending account email. Email registrant of approval
+        //TODO create reject method and ask for reason and include specific denial link in pending account email. Email registrant of denial with reason.
+        //TODO automatically approve accounts created by adminstrators
+        //TODO set up password generation button/field. (probably needs to be radio for now and make password field not required).
+        //TODO set up new_password and new_password_confirm fields to do the confirmation and validation on, then hash password to password field.
+        //TODO Account creation confirmation email to registrant with account details. Include password if random password generated or account created by adminstrator.
+        
         $user = $this->Users->newEmptyEntity();
 
         $this->Authorization->authorize($user);
@@ -84,7 +104,7 @@ class UsersController extends AppController
         }
         $people = $this->Users->People->find('list', ['limit' => 200])->all();
         $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200])->all();
-        $this->set(compact('user', 'people', 'userTypes'));
+        $this->set(compact('user', 'people', 'userTypes','statuses'));
     }
 
     /**
@@ -114,7 +134,7 @@ class UsersController extends AppController
         $people = $this->Users->People->find('list', ['limit' => 200])->all();
         $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200])->all();
         $users = $this->Users->find('list', ['limit' => 200])->all();
-        $this->set(compact('user', 'people', 'userTypes', 'users'));
+        $this->set(compact('user', 'people', 'userTypes', 'users','statuses'));
     }
 
     /**
@@ -138,5 +158,36 @@ class UsersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Login method
+     *
+     * @return renders view.
+     */
+    public function login()
+    {
+        $this->Authorization->skipAuthorization();
+
+        //TODO check for pending, denied, or inactive user accounts and reject login
+
+        $result = $this->Authentication->getResult();
+        // If the user is logged in log them out so they can log in again
+        if ($result->isValid()) {
+            return $this->redirect(['controller' => 'profiles', 'action' => 'logout']);
+        }
+    }
+
+    /**
+     * Logout method
+     * 
+     * @return void
+     */
+    public function logout()
+    {
+        $this->Authorization->skipAuthorization();
+
+        $this->Authentication->logout();
+        return $this->redirect(['controller' => 'Profiles', 'action' => 'login']);
     }
 }
