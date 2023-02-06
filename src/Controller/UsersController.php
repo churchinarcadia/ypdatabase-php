@@ -23,6 +23,21 @@ class UsersController extends AppController
     ];
     
     /**
+     * Called before the controller action. You can use this method to configure and customize components
+     * or perform logic that needs to happen before each controller action.
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     * @link https://book.cakephp.org/4/en/controllers.html#request-life-cycle-callbacks
+     */
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+ 
+        $this->Authentication->allowUnauthenticated(['add','edit','login']);
+    }
+    
+    /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
@@ -172,9 +187,12 @@ class UsersController extends AppController
         //TODO check for pending, denied, or inactive user accounts and reject login
 
         $result = $this->Authentication->getResult();
-        // If the user is logged in log them out so they can log in again
         if ($result->isValid()) {
-            return $this->redirect(['controller' => 'profiles', 'action' => 'logout']);
+            $target = $this->Authentication->getLoginRedirect() ?? '/home';
+            return $this->redirect($target);
+        }
+        if ($this->request->is('post')) {
+            $this->Flash->error('Invalid username or password');
         }
     }
 
@@ -188,6 +206,6 @@ class UsersController extends AppController
         $this->Authorization->skipAuthorization();
 
         $this->Authentication->logout();
-        return $this->redirect(['controller' => 'Profiles', 'action' => 'login']);
+        return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
     }
 }

@@ -44,14 +44,9 @@ class AppController extends Controller
      * Used to determine if relevant action buttons/links will be displayed to the user in the view
      * Set only if a controller is loaded
      * 
-     * @return array
+     * @var array
      */
     protected $can;
-
-    if ($this->request->getParam('controller') != '' && $this->request->getParam('controller') != 'Pages') {
-        $user = $this->request->getAttribute('identity');
-        $can['add'] = $user->can('add');
-    }
     
     /**
      * Initialization hook method.
@@ -84,13 +79,33 @@ class AppController extends Controller
          * Otherwise timezone is guessed from user's IP address.
          */
         $this->timezone = Configure::read('App.timezone');
+
+        /**
+         * For all controllers except Pages,
+         * checks if user can add, edit, delete, or view
+         * and creates an array with that information
+         */
+        /*
+        if ($this->request->getParam('controller') != '' && $this->request->getParam('controller') != 'Pages') {
+            $user = $this->request->getAttribute('identity');
+            $can['add'] = $user->can('add');
+            $can['edit'] = $user->can('edit');
+            $can['delete'] = $user->can('delete');
+            $can['view'] = $user->can('view');
+
+            $this->set(compact('can'));
+        }
+        */
+    
     }
 
     /**
-     * beforeRender
-     * 
-     * @param \Cake\Event\Event $event An Event Interface
-     * @return void
+     * Called after the controller action is run, but before the view is rendered. You can use this method
+     * to perform logic or set view variables that are required on every request.
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     * @link https://book.cakephp.org/4/en/controllers.html#request-life-cycle-callbacks
      */
     public function beforeRender(EventInterface $event)
     {
