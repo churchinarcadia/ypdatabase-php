@@ -61,9 +61,12 @@ class PagesController extends AppController
         }
 
         $this->Authorization->skipAuthorization();
-        //$this->Authorization->authorize('display', $path);
+        //TODO fix authorization
+        //$this->Authorization->authorize('display', $path);0
 
-        $this->set(compact('page', 'subpage'));
+        $identity = $this->request->getAttribute('identity');
+
+        $this->set(compact('page', 'subpage', 'identity'));
 
         try {
             return $this->render(implode('/', $path));

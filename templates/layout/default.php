@@ -45,7 +45,7 @@ $cakeDescription = 'Church in Arcadia YP Database';
                 'Documentation',
                 ['controller' => 'Pages','action' => 'display', 'home'],
             );
-            if (/*Check if user is logged in*/ false)
+            if ($identity)
             {
                 echo $this->Html->link(
                     'Log Out',

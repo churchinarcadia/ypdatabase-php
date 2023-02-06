@@ -8,6 +8,10 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
+//Needed for ADmad/SocialAuth
+use \Cake\Datasource\EntityInterface;
+use \Cake\Http\Session;
+
 /**
  * Users Model
  *
@@ -210,5 +214,35 @@ class UsersTable extends Table
         $rules->add($rules->existsIn('user_type_id', 'UserTypes'), ['errorField' => 'user_type_id']);
 
         return $rules;
+    }
+
+    public function getUser(EntityInterface $profile, Session $session)
+    {
+        //identifier
+        //picture_url
+
+        // Check if user with same Discord ID exists. This avoids creating multiple
+        // user accounts for different social identities of same user. You should
+        // probably skip this check if your system doesn't enforce unique email
+        // per user.
+        $user = $this->find()
+            ->where(['discord_id' => $profile->identifier])
+            ->first();
+
+        if ($user) {
+            return $user;
+        }
+
+        // Create new user account
+        $user = $this->newEntity([
+            'email' => $profile->identifier,
+        ]);
+        $user = $this->save($user);
+
+        if (!$user) {
+            throw new \RuntimeException('Unable to save new user');
+        }
+
+        return $user;
     }
 }

@@ -28,6 +28,7 @@ use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 
+//Imports related to Authentication
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
@@ -36,6 +37,7 @@ use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
 
+//Imports related to Authorization
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\AuthorizationServiceProviderInterface;
@@ -43,6 +45,11 @@ use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\OrmResolver;
 use Psr\Http\Message\ResponseInterface;
 
+//Listener Import for SocialAuth
+use App\Event\SocialAuthListener;
+use Cake\Event\EventManager;
+
+//Imports related to Timezone
 use \jeanvaljean\Timezone\Middleware\TimezoneMiddleware;
 use \jeanvaljean\Timezone\Middleware\GeoPlugin;
 
@@ -125,6 +132,40 @@ implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderI
             // https://book.cakephp.org/4/en/controllers/middleware.html#cross-site-request-forgery-csrf-middleware
             ->add(new CsrfProtectionMiddleware([
                 'httponly' => true,
+            ]))
+
+
+            ->add(new \ADmad\SocialAuth\Middleware\SocialAuthMiddleware([
+                // Request method type use to initiate authentication.
+                'requestMethod' => 'GET',
+                // Login page URL. In case of auth failure user is redirected to login
+                // page with "error" query string var.
+                'loginUrl' => '/profiles/login',
+                // URL to redirect to after authentication (string or array).
+                'loginRedirect' => '/',
+                // Boolean indicating whether user identity should be returned as entity.
+                'userEntity' => false,
+                // User model.
+                'userModel' => 'Profiles',
+                // Social profile model.
+                'socialProfileModel' => 'ADmad/SocialAuth.SocialProfiles',
+                // Finder type.
+                'finder' => 'all',
+                // Fields.
+                'fields' => [
+                    //'password' => 'password',
+                ],
+                // Session key to which to write identity record to.
+                'sessionKey' => 'Auth',
+                // The method in user model which should be called in case of new user.
+                // It should return a User entity.
+                'getUserCallback' => 'getUser',
+                // SocialConnect Auth service's providers config. https://github.com/SocialConnect/auth/blob/master/README.md
+                'serviceConfig' => Configure::read('SocialAuthServiceConfig'),
+                // Instance of `\SocialConnect\Auth\CollectionFactory`. If none provided one will be auto created. Default `null`.
+                'collectionFactory' => null,
+                // Whether social connect errors should be logged. Default `true`.
+                'logErrors' => true,
             ]))
             
             // Authentication Middleware
