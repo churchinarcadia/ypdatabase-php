@@ -13,7 +13,7 @@ use App\Utility\PolicyFunctions;
 /**
  * UserType policy
  */
-class UserTypePolicy
+class UserTypePolicy implements BeforePolicyInterface
 {
     /**
      * Defines a pre-authorization check.
@@ -30,7 +30,9 @@ class UserTypePolicy
     {
         $functions = new PolicyFunctions;
 
-        return $functions->isUserAuthorized($user,[1]);
+        if($functions->isUserAuthorized($user,[1])) {
+            return true;
+        }
         
         /*
         if ($user->getOriginalData()->is_admin()) {

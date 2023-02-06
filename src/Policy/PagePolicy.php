@@ -13,7 +13,7 @@ use App\Utility\PolicyFunctions;
 /**
  * Meeting policy
  */
-class PagePolicy
+class PagePolicy// implements BeforePolicyInterface
 {
     /**
      * Defines a pre-authorization check.
@@ -49,7 +49,6 @@ class PagePolicy
      */
     public function canDisplay(IdentityInterface $user, $path)
     {
-        
         $functions = new PolicyFunctions;
 
         if ($functions->isUserAuthorized($user,[1])) {

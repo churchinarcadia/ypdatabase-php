@@ -13,7 +13,7 @@ use App\Utility\PolicyFunctions;
 /**
  * Address policy
  */
-class AddressPolicy
+class AddressPolicy implements BeforePolicyInterface
 {
     /**
      * Defines a pre-authorization check.
@@ -30,7 +30,9 @@ class AddressPolicy
     {
         $functions = new PolicyFunctions;
 
-        return $functions->isUserAuthorized($user,[1,2]);
+        if($functions->isUserAuthorized($user,[1,2])) {
+            return true;
+        }
         
         /*
         if ($user->getOriginalData()->is_admin()) {
