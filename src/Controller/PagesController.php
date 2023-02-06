@@ -59,6 +59,10 @@ class PagesController extends AppController
         if (!empty($path[1])) {
             $subpage = $path[1];
         }
+
+        $this->Authorization->skipAuthorization();
+        //$this->Authorization->authorize('display', $path);
+
         $this->set(compact('page', 'subpage'));
 
         try {

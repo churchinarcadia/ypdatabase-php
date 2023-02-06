@@ -43,6 +43,9 @@ use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\OrmResolver;
 use Psr\Http\Message\ResponseInterface;
 
+use \jeanvaljean\Timezone\Middleware\TimezoneMiddleware;
+use \jeanvaljean\Timezone\Middleware\GeoPlugin;
+
 /**
  * Application setup class.
  *
@@ -84,6 +87,7 @@ implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderI
         $this->addPlugin('Authentication');
         $this->addPlugin('ADmad/SocialAuth');
         $this->addPlugin('IdeHelper');
+        $this->addPlugin('jeanvaljean/Timezone');
     }
 
     /**
@@ -131,7 +135,15 @@ implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderI
             // Authorization Middleware
             // Call a hook method on your application when it starts handling the request
             // This hook method allows your application to define the AuthorizationService it wants to use.
-            ->add(new AuthorizationMiddleware($this));
+            ->add(new AuthorizationMiddleware($this))
+
+            //Timezone Middleware
+            ->add(new TimezoneMiddleware(
+                new GeoPlugin(),
+                [
+                    'defaultTimezone' => 'UTC',
+                    'cookieTime' => 12
+            ]));
 
         return $middlewareQueue;
     }

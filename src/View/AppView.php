@@ -17,6 +17,8 @@ namespace App\View;
 
 use Cake\View\View;
 
+use Cake\Core\Configure;
+
 /**
  * Application View
  *
@@ -37,5 +39,8 @@ class AppView extends View
      */
     public function initialize(): void
     {
+        $this->loadHelper('jeanvaljean/Timezone.Timezone', [
+            'timezone' => Configure::read('App.timezone')
+        ]);
     }
 }
