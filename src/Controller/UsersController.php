@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Authentication\Identifier\PasswordIdentifier;
+
 /**
  * Users Controller
  *
@@ -17,10 +19,38 @@ class UsersController extends AppController
      * @var array
      */
     private $statuses = [
-        'Pending',
-        'Approved',
-        'Denied',
+        'Pending' => 'Pending',
+        'Approved' => 'Approved',
+        'Denied' => 'Denied',
+        'Deactivated' => 'Deactivated',
     ];
+
+    /**
+     * Initialization hook method.
+     *
+     * Use this method to add common initialization code like loading components.
+     *
+     * e.g. `$this->loadComponent('FormProtection');`
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        /**
+         * User account statuses
+         * 
+         * @var array
+         */
+        /*
+        $statuses = [
+            'Pending',
+            'Approved',
+            'Denied',
+        ];
+        */
+    }
     
     /**
      * Called before the controller action. You can use this method to configure and customize components
@@ -119,7 +149,8 @@ class UsersController extends AppController
         }
         $people = $this->Users->People->find('list', ['limit' => 200])->all();
         $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200])->all();
-        $this->set(compact('user', 'people', 'userTypes','statuses'));
+        $statuses = $this->statuses;
+        $this->set(compact('user', 'people', 'userTypes', 'statuses'));
     }
 
     /**
@@ -131,11 +162,13 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
+        $this->Authorization->skipAuthorization();
+        
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
 
-        $this->Authorization->authorize($user);
+        //$this->Authorization->authorize($user);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -149,7 +182,8 @@ class UsersController extends AppController
         $people = $this->Users->People->find('list', ['limit' => 200])->all();
         $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200])->all();
         $users = $this->Users->find('list', ['limit' => 200])->all();
-        $this->set(compact('user', 'people', 'userTypes', 'users','statuses'));
+        $statuses = $this->statuses;
+        $this->set(compact('user', 'people', 'userTypes', 'users', 'statuses'));
     }
 
     /**
@@ -186,13 +220,29 @@ class UsersController extends AppController
 
         //TODO check for pending, denied, or inactive user accounts and reject login
 
-        $result = $this->Authentication->getResult();
-        if ($result->isValid()) {
-            $target = $this->Authentication->getLoginRedirect() ?? '/home';
-            return $this->redirect($target);
-        }
+        $this->request->allowMethod(['get', 'post']);
+
         if ($this->request->is('post')) {
-            $this->Flash->error('Invalid username or password');
+            $identity = $this->request->getAttribute('identity');
+        
+            if ($identity != null) {
+                $user = $identity->getOriginalData();
+                $canLogin = $identity->canResult('login',$user);
+
+                if ($canLogin->getStatus()) {
+                    $loginRresult = $this->Authentication->getResult();
+                    if ($loginRresult->isValid()) {
+                        $target = $this->Authentication->getLoginRedirect() ?? '/home';
+                        return $this->redirect($target);
+                    } else {
+                        $this->Flash->error('Invalid email or password.');
+                    }
+                } else {
+                    $this->Flash->error($canLogin->getReason());
+                }
+            } else {
+                $this->Flash->error('Invalid email or password.');
+            }
         }
     }
 

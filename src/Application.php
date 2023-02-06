@@ -36,13 +36,21 @@ use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
 
+use Authorization\AuthorizationService;
+use Authorization\AuthorizationServiceInterface;
+use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Policy\OrmResolver;
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Application setup class.
  *
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication implements AuthenticationServiceProviderInterface
+class Application extends BaseApplication
+implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderInterface
 {
     /**
      * Load all the application configuration and bootstrap logic.
@@ -114,13 +122,16 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             ->add(new CsrfProtectionMiddleware([
                 'httponly' => true,
             ]))
+            
             // Authentication Middleware
             // Call a hook method on your application when it starts handling the request
             // This hook method allows your application to define the AuthenticationService it wants to use.
             ->add(new AuthenticationMiddleware($this))
 
-
-            ;
+            // Authorization Middleware
+            // Call a hook method on your application when it starts handling the request
+            // This hook method allows your application to define the AuthorizationService it wants to use.
+            ->add(new AuthorizationMiddleware($this));
 
         return $middlewareQueue;
     }
@@ -194,5 +205,19 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $service->loadIdentifier('Authentication.Password', compact('fields'));
 
         return $service;
+    }
+
+    /**
+     * Returns a service provider instance.
+     * Configures basic policy resolvers that will match ORM entities with their policy classes.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request Request
+     * @return \Authentication\AuthorizationServiceInterface
+     */
+    public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
+    {
+        $resolver = new OrmResolver();
+
+        return new AuthorizationService($resolver);
     }
 }

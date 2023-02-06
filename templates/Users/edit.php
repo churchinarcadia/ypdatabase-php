@@ -33,7 +33,7 @@
                     echo $this->Form->control('person_id', ['options' => $people, 'empty' => true]);
                     //TODO check for admin usertype
                     //TODO add options
-                    echo $this->Form->control('status');
+                    echo $this->Form->control('status', ['options' => $statuses, 'empty' => true]);
                     echo $this->Form->control('user_type_id', ['options' => $userTypes, 'empty' => true]);
                     echo $this->Form->control('creator', ['options' => $users, 'empty' => true]);
                     echo $this->Form->control('created');

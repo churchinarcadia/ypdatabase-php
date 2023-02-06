@@ -27,7 +27,7 @@
 
                     //TODO add options
                     //TODO check for admin usertype
-                    echo $this->Form->control('status');
+                    echo $this->Form->control('status', ['options' => $statuses, 'empty' => true]);
                     echo $this->Form->control('user_type_id', ['options' => $userTypes, 'empty' => true]);
                 ?>
             </fieldset>

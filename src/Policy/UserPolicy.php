@@ -7,6 +7,7 @@ use App\Model\Entity\User;
 use Authorization\IdentityInterface;
 
 use Authorization\Policy\BeforePolicyInterface;
+use Authorization\Policy\Result;
 
 use App\Utility\PolicyFunctions;
 
@@ -66,7 +67,7 @@ class UserPolicy
     {
         $functions = new PolicyFunctions;
 
-        return $functions->isUserAuthorized($user,[2]) || $resource->id == $user->id;
+        return ($resource->user_type_id >= 2 && $functions->isUserAuthorized($user,[2])) || $resource->id == $user->id;
     }
 
     /**
@@ -92,5 +93,35 @@ class UserPolicy
         $functions = new PolicyFunctions;
 
         return $functions->isUserAuthorized($user,[2,3]);
+    }
+
+    /**
+     * Check if $user can log in
+     * 
+     * @param \Authorization\IdentityInterface $user The user.
+     * @return bool
+     */
+    public function canLogin(IdentityInterface $user)
+    {
+        $status = $user->status;
+
+        if ($status == 'Approved') {
+            return new Result(true);
+        } elseif ($status == 'Pending') {
+            return new Result(
+                false,
+                'Your account is still pending approval. If your account is still pending after seven days after creation, please contact a serving one.'
+            );
+        } elseif ($status == 'Denied') {
+            return new Result(
+                false,
+                'Your account creation has been denied. For further details, please contact a serving one.'
+            );
+        } elseif ($status == 'Deactivated') {
+            return new Result(
+                false,
+                'Your account has been deactivated. To reactivate it, please contact a serving one.'
+            );
+        }
     }
 }
