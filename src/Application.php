@@ -50,8 +50,8 @@ use App\Event\SocialAuthListener;
 use Cake\Event\EventManager;
 
 //Imports related to Timezone
-use \jeanvaljean\Timezone\Middleware\TimezoneMiddleware;
-use \jeanvaljean\Timezone\Middleware\GeoPlugin;
+use jeanvaljean\Timezone\Middleware\TimezoneMiddleware;
+use jeanvaljean\Timezone\Middleware\GeoPlugin;
 
 /**
  * Application setup class.

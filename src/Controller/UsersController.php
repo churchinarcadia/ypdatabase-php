@@ -136,7 +136,12 @@ class UsersController extends AppController
         
         $user = $this->Users->newEmptyEntity();
 
-        $this->Authorization->authorize($user);
+        if ($this->request->getAttribute('identity')) {
+            $this->Authorization->authorize($user);
+        } else {
+            $this->Authorization->skipAuthorization();
+        }
+        
 
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());

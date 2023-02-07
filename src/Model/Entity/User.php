@@ -83,10 +83,12 @@ class User extends Entity
      */
     protected function _getUsername()
     {
+        $username = null;
+        
         if($this->has('person'))
         {
             $username = strtolower(substr($this->Person->first_name,0,1) . $this->Person->last_name);
-        } else {
+        } elseif ($this->has('email')) {
             $username = explode('@',$this->email)[0];
         }
         
