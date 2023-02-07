@@ -33,9 +33,9 @@
                     <td><?= h($user->status) ?></td>
                     <td><?= $user->has('user_type') ? $this->Html->link($user->user_type->name, ['controller' => 'UserTypes', 'action' => 'view', $user->user_type->id]) : '' ?></td>
                     <td><?= $user->has('user_creator') ? $this->Html->link($user->user_creator->username, ['controller' => 'Users', 'action' => 'view', $user->user_creator->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($user->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($user->created) ?></td>
                     <td><?= $user->has('user_modifier') ? $this->Html->link($user->user_modifier->username, ['controller' => 'Users', 'action' => 'view', $user->user_modifier->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($user->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($user->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
                         <?php //TODO check for admin usertype or themselves ?>

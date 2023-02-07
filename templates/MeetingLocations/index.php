@@ -38,9 +38,9 @@
                     <td><?= h($meetingLocation->notes) ?></td>
                     <?php //TODO check for administrator usertype ?>
                     <td><?= $meetingLocation->has('meeting_location_creator') ? $this->Html->link($meetingLocation->meeting_location_creator->username, ['controller' => 'Users', 'action' => 'view', $meetingLocation->meeting_location_creator->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($meetingLocation->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($meetingLocation->created) ?></td>
                     <td><?= $meetingLocation->has('meeting_location_modifier') ? $this->Html->link($meetingLocation->meeting_location_modifier->username, ['controller' => 'Users', 'action' => 'view', $meetingLocation->meeting_location_modifier->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($meetingLocation->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($meetingLocation->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $meetingLocation->id]) ?>
                         <?php //TODO check for serving one or adminstrator usertype ?>

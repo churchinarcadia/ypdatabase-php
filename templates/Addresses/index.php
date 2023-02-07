@@ -28,9 +28,9 @@
                     <td><?= h($address->full_address) ?></td>
                     <?php //TODO Add check for Admin usertype ?>
                     <td><?= $address->has('address_creator') ? $this->Html->link($address->address_creator->username, ['controller' => 'Users', 'action' => 'view', $address->address_creator->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($address->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($address->created) ?></td>
                     <td><?= $address->has('address_modifier') ? $this->Html->link($address->address_modifier->username, ['controller' => 'Users', 'action' => 'view', $address->address_modifier->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($address->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($address->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $address->id]) ?>
                         <?php //TODO add check for serving one or admin usertype ?>

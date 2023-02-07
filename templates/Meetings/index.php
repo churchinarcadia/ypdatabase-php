@@ -37,9 +37,9 @@
                     <td><?= $meeting->has('meeting_location') ? $this->Html->link($meeting->meeting_location->name, ['controller' => 'MeetingLocations', 'action' => 'view', $meeting->meeting_location->id]) : '' ?></td>
                     <?php //TODO check for admin usertype ?>
                     <td><?= $meeting->has('meeting_creator') ? $this->Html->link($meeting->meeting_creator->username, ['controller' => 'Users', 'action' => 'view', $meeting->meeting_creator->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($meeting->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($meeting->created) ?></td>
                     <td><?= $meeting->has('meeting_modifier') ? $this->Html->link($meeting->meeting_modifier->username, ['controller' => 'Users', 'action' => 'view', $meeting->meeting_modifier->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($meeting->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($meeting->modified) ?></td>
                     <?php //TODO check for steward usertype or above ?>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $meeting->id]) ?>

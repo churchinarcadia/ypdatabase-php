@@ -58,9 +58,9 @@
                     <td><?= $person->has('mother') ? $this->Html->link($person->mother->full_name, ['controller' => 'People', 'action' => 'view', $person->mother->id]) : '' ?></td>
                     <?php //TODO check for admin usertype ?>
                     <td><?= $person->has('person_creator') ? $this->Html->link($person->person_creator->full_name, ['controller' => 'Users', 'action' => 'view', $person->person_creator->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($person->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($person->created) ?></td>
                     <td><?= $person->has('person_modifier') ? $this->Html->link($person->person_modifier->full_name, ['controller' => 'Users', 'action' => 'view', $person->person_modifier->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($person->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($person->modified) ?></td>
                     <?php //TODO check for steward usertype or higher ?>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $person->id]) ?>

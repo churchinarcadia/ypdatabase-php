@@ -39,7 +39,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= $this->Timezone->converted_timezone($meetingPerson->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($meetingPerson->created) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modifier') ?></th>
@@ -47,7 +47,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= $this->Timezone->converted_timezone($meetingPerson->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($meetingPerson->modified) ?></td>
                 </tr>
             </table>
         </div>

@@ -35,7 +35,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= $this->Timezone->converted_timezone($socialMediaType->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($socialMediaType->created) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modifier') ?></th>
@@ -43,7 +43,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= $this->Timezone->converted_timezone($socialMediaType->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($socialMediaType->modified) ?></td>
                 </tr>
             </table>
             <div class="text">

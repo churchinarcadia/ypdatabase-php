@@ -28,9 +28,9 @@
                     <td><?= h($socialMediaType->id) ?></td>
                     <td><?= h($socialMediaType->name) ?></td>
                     <td><?= $socialMediaType->has('social_media_type_creator') ? $this->Html->link($socialMediaType->social_media_type_creator->username, ['controller' => 'Users', 'action' => 'view', $socialMediaType->social_media_type_creator->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($socialMediaType->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($socialMediaType->created) ?></td>
                     <td><?= $socialMediaType->has('social_media_type_modifier') ? $this->Html->link($socialMediaType->social_media_type_modifier->username, ['controller' => 'Users', 'action' => 'view', $socialMediaType->social_media_type_modifier->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($socialMediaType->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($socialMediaType->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $socialMediaType->id]) ?>
                         <?php //TODO check for serving one usertype or higher ?>

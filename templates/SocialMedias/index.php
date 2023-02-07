@@ -32,9 +32,9 @@
                     <td><?= h($socialMedia->handle) ?></td>
                     <?php //TODO check for admin usertype ?>
                     <td><?= $socialMedia->has('social_media_creator') ? $this->Html->link($socialMedia->social_media_creator->username, ['controller' => 'Users', 'action' => 'view', $socialMedia->social_media_creator->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($socialMedia->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($socialMedia->created) ?></td>
                     <td><?= $socialMedia->has('social_media_modifier') ? $this->Html->link($socialMedia->social_media_modifier->username, ['controller' => 'Users', 'action' => 'view', $socialMedia->social_media_modifier->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($socialMedia->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($socialMedia->modified) ?></td>
                     <?php //TODO check for steward usertype or higher ?>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $socialMedia->id]) ?>

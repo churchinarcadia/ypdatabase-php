@@ -30,9 +30,9 @@
                     <td><?= $meetingLocationsNotify->has('meeting_location') ? $this->Html->link($meetingLocationsNotify->meeting_location->name, ['controller' => 'MeetingLocations', 'action' => 'view', $meetingLocationsNotify->meeting_location->id]) : '' ?></td>
                     <td><?= $meetingLocationsNotify->has('person') ? $this->Html->link($meetingLocationsNotify->person->full_name, ['controller' => 'People', 'action' => 'view', $meetingLocationsNotify->person->id]) : '' ?></td>
                     <td><?= $meetingLocationsNotify->has('meeting_location_notify_creator') ? $this->Html->link($meetingLocationsNotify->meeting_location_notify_creator->username, ['controller' => 'Users', 'action' => 'view', $meetingLocationsNotify->meeting_location_notify_creator->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($meetingLocationsNotify->created) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($meetingLocationsNotify->created) ?></td>
                     <td><?= $meetingLocationsNotify->has('meeting_location_notify_modifier') ? $this->Html->link($meetingLocationsNotify->meeting_location_notify_modifier->username, ['controller' => 'Users', 'action' => 'view', $meetingLocationsNotify->meeting_location_notify_modifier->id]) : '' ?></td>
-                    <td><?= $this->Timezone->converted_timezone($meetingLocationsNotify->modified) ?></td>
+                    <td><?= $this->Timezone->convert_timezone($meetingLocationsNotify->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $meetingLocationsNotify->id]) ?>
                         <?php //TODO check for serving one or admin usertype ?>
