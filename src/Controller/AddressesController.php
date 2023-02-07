@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+
 /**
  * Addresses Controller
  *
@@ -11,6 +13,59 @@ namespace App\Controller;
  */
 class AddressesController extends AppController
 {
+    /**
+     * Identity of logged in user.
+     * 
+     * @var object
+     */
+    private $identity;
+    
+    /**
+     * User permissions
+     * 
+     * @var array
+     */
+    private $permissions;
+    
+    /**
+     * Initialization hook method.
+     *
+     * Use this method to add common initialization code like loading components.
+     *
+     * e.g. `$this->loadComponent('FormProtection');`
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->identity = $this->request->getAttribute('identity');
+
+        if ($this->identity) {
+            if (in_array($this->request->getParam('action'),['index', 'view', 'edit'])) {
+            
+                $can_attendee = $this->Addresses->newEmptyEntity();
+                
+                //$this->permissions['address']['add'] = false;
+                $this->permissions['address']['add'] = $this->identity->canResult('add', $can_attendee)->getStatus();
+            }
+        }        
+    }
+
+    /**
+     * Called after the controller action is run, but before the view is rendered. You can use this method
+     * to perform logic or set view variables that are required on every request.
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     * @link https://book.cakephp.org/4/en/controllers.html#request-life-cycle-callbacks
+     */
+    public function beforeRender(EventInterface $event)
+    {
+        parent::beforeRender($event);
+    }
+    
     /**
      * Index method
      *
@@ -32,7 +87,18 @@ class AddressesController extends AppController
 
         $addresses = $this->paginate($addresses_query);
 
-        $this->set(compact('addresses'));
+        if ($this->identity) {
+            foreach ($addresses as $address) {
+                //$this->permissions['address'][$address->id]['id'] = $address->id;
+                $this->permissions['address'][$address->id]['can']['view'] = $this->identity->canResult('view', $address)->getStatus();
+                $this->permissions['address'][$address->id]['can']['edit'] = $this->identity->canResult('edit', $address)->getStatus();
+                $this->permissions['address'][$address->id]['can']['delete'] = $this->identity->canResult('delete', $address)->getStatus();
+            }
+        }
+        
+        $permissions = $this->permissions;
+
+        $this->set(compact('addresses', 'permissions'));
     }
 
     /**
@@ -55,7 +121,15 @@ class AddressesController extends AppController
 
         $this->Authorization->authorize($address);
 
-        $this->set(compact('address'));
+        if ($this->identity) {
+            //$this->permissions['address'][$address->id]['id'] = $address->id;
+            $this->permissions['address'][$address->id]['can']['edit'] = $this->identity->canResult('edit', $address)->getStatus();
+            $this->permissions['address'][$address->id]['can']['delete'] = $this->identity->canResult('delete', $address)->getStatus();
+        }
+
+        $permissions = $this->permissions;
+
+        $this->set(compact('address', 'permissions'));
     }
 
     /**
@@ -105,8 +179,12 @@ class AddressesController extends AppController
             }
             $this->Flash->error(__('The address could not be saved. Please, try again.'));
         }
+        if ($this->identity) {
+            $this->permissions['address'][$address->id]['can']['delete'] = $this->identity->canResult('delete', $address)->getStatus();
+        }
+        $permissions = $this->permissions;
         $users = $this->Addresses->AddressCreators->find('list', ['limit' => 200])->all();
-        $this->set(compact('address', 'users'));
+        $this->set(compact('address', 'permissions', 'users'));
     }
 
     /**

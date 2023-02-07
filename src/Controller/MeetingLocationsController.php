@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+
 /**
  * MeetingLocations Controller
  *
@@ -11,6 +13,59 @@ namespace App\Controller;
  */
 class MeetingLocationsController extends AppController
 {
+    /**
+     * Identity of logged in user.
+     * 
+     * @var object
+     */
+    private $identity;
+    
+    /**
+     * User permissions
+     * 
+     * @var array
+     */
+    private $permissions;
+    
+    /**
+     * Initialization hook method.
+     *
+     * Use this method to add common initialization code like loading components.
+     *
+     * e.g. `$this->loadComponent('FormProtection');`
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->identity = $this->request->getAttribute('identity');
+
+        if ($this->identity) {
+            if (in_array($this->request->getParam('action'),['index', 'view', 'edit'])) {
+            
+                $can_meetingLocation = $this->MeetingLocations->newEmptyEntity();
+                
+                //$this->permissions['address']['add'] = false;
+                $this->permissions['meeting_location']['add'] = $this->identity->canResult('add', $can_meetingLocation)->getStatus();
+            }
+        }        
+    }
+
+    /**
+     * Called after the controller action is run, but before the view is rendered. You can use this method
+     * to perform logic or set view variables that are required on every request.
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     * @link https://book.cakephp.org/4/en/controllers.html#request-life-cycle-callbacks
+     */
+    public function beforeRender(EventInterface $event)
+    {
+        parent::beforeRender($event);
+    }
+    
     /**
      * Index method
      *
@@ -33,7 +88,18 @@ class MeetingLocationsController extends AppController
 
         $meetingLocations = $this->paginate($meetingLocations_query);
 
-        $this->set(compact('meetingLocations'));
+        if ($this->identity) {
+            foreach ($meetingLocations as $meetingLocation) {
+                //$this->permissions['meeting_location'][$meetingLocation->id]['id'] = $meetingLocation->id;
+                $this->permissions['meeting_location'][$meetingLocation->id]['can']['view'] = $this->identity->canResult('view', $meetingLocation)->getStatus();
+                $this->permissions['meeting_location'][$meetingLocation->id]['can']['edit'] = $this->identity->canResult('edit', $meetingLocation)->getStatus();
+                $this->permissions['meeting_location'][$meetingLocation->id]['can']['delete'] = $this->identity->canResult('delete', $meetingLocation)->getStatus();
+            }
+        }
+
+        $permissions = $this->permissions;
+
+        $this->set(compact('meetingLocations', 'permissions'));
     }
 
     /**
@@ -57,7 +123,15 @@ class MeetingLocationsController extends AppController
 
         $this->Authorization->authorize($meetingLocation);
 
-        $this->set(compact('meetingLocation'));
+        if ($this->identity) {
+            //$this->permissions['address'][$address->id]['id'] = $address->id;
+            $this->permissions['meeting_location'][$meetingLocation->id]['can']['edit'] = $this->identity->canResult('edit', $meetingLocation)->getStatus();
+            $this->permissions['meeting_location'][$meetingLocation->id]['can']['delete'] = $this->identity->canResult('delete', $meetingLocation)->getStatus();
+        }
+
+        $permissions = $this->permissions;
+
+        $this->set(compact('meetingLocation', 'permissions'));
     }
 
     /**
@@ -109,10 +183,14 @@ class MeetingLocationsController extends AppController
             }
             $this->Flash->error(__('The meeting location could not be saved. Please, try again.'));
         }
+        if ($this->identity) {
+            $this->permissions['meeting_location'][$meetingLocation->id]['can']['delete'] = $this->identity->canResult('delete', $meetingLocation)->getStatus();
+        }
+        $permissions = $this->permissions;
         $addresses = $this->MeetingLocations->Addresses->find('list', ['limit' => 200])->all();
         $users = $this->MeetingLocations->MeetingLocationCreators->find('list', ['limit' => 200])->all();
 
-        $this->set(compact('meetingLocation', 'addresses', 'users'));
+        $this->set(compact('meetingLocation', 'permissions', 'addresses', 'users'));
     }
 
     /**

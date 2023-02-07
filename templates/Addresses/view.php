@@ -7,15 +7,30 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?php //TODO check for serving one or admin usertype?>
-            <?= $this->Html->link(__('Edit Address'), ['action' => 'edit', $address->id], ['class' => 'side-nav-item']) ?>
-            <?php //TODO check for admin usertype?>
-            <?= $this->Form->postLink(__('Delete Address'), ['action' => 'delete', $address->id], ['confirm' => __('Are you sure you want to delete # {0}?', $address->id), 'class' => 'side-nav-item']) ?>
-            <?php //TODO check for steward or above usertype ?>
-            <?= $this->Html->link(__('List Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?php //TODO check for admin usertype ?>
-            <?= $this->Html->link(__('New Address'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?php
+                if (
+                    $permissions['address']['add'] ||
+                    $permissions['address'][$address->id]['can']['edit'] ||
+                    $permissions['address'][$address->id]['can']['delete']
+                ) {
+                    ?>
+                    <h4 class="heading"><?= __('Actions') ?></h4>
+                    <?php
+                }
+                if ($permissions['address'][$address->id]['can']['edit']) {
+                    echo $this->Html->link(__('Edit Address'), ['action' => 'edit', $address->id], ['class' => 'side-nav-item']);
+                }
+                if ($permissions['address'][$address->id]['can']['delete']) {
+                    echo $this->Form->postLink(__('Delete Address'), ['action' => 'delete', $address->id], ['confirm' => __('Are you sure you want to delete # {0}?', $address->id), 'class' => 'side-nav-item']);
+                }
+                //Steward or higher usertype?
+                if (true) {
+                    echo $this->Html->link(__('List Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']);
+                }
+                if ($permissions['address']['add']) {
+                    echo $this->Html->link(__('New Address'), ['action' => 'add'], ['class' => 'side-nav-item']);
+                }
+            ?>
         </div>
     </aside>
     <div class="column-responsive column-80">
@@ -54,22 +69,28 @@
                     <th><?= __('Zip') ?></th>
                     <td><?= h($address->zip) ?></td>
                 </tr>
-                <tr>
-                    <th><?= __('Creator') ?></th>
-                    <td><?= $address->has('address_creator') ? $this->Html->link($address->address_creator->username, ['controller' => 'Users', 'action' => 'view', $address->address_creator->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= $this->Timezone->convert_timezone($address->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modifier') ?></th>
-                    <td><?= $address->has('address_modifier') ? $this->Html->link($address->address_modifier->username, ['controller' => 'Users', 'action' => 'view', $address->address_modifier->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= $this->Timezone->convert_timezone($address->modified) ?></td>
-                </tr>
+                <?php
+                    if ($logged_in_user->user_type_id == 1) {
+                        ?>
+                        <tr>
+                            <th><?= __('Creator') ?></th>
+                            <td><?= $address->has('address_creator') ? $this->Html->link($address->address_creator->username, ['controller' => 'Users', 'action' => 'view', $address->address_creator->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= $this->Timezone->convert_timezone($address->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modifier') ?></th>
+                            <td><?= $address->has('address_modifier') ? $this->Html->link($address->address_modifier->username, ['controller' => 'Users', 'action' => 'view', $address->address_modifier->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= $this->Timezone->convert_timezone($address->modified) ?></td>
+                        </tr>
+                        <?php
+                    }
+                ?>
             </table>
             <div class="related">
                 <h4><?= __('Related Meeting Locations') ?></h4>

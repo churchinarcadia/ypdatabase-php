@@ -39,16 +39,6 @@ class AppController extends Controller
     protected $timezone;
 
     /**
-     * "Can" array
-     * Creates an array indicating if the user can add, edit, delete, or view
-     * Used to determine if relevant action buttons/links will be displayed to the user in the view
-     * Set only if a controller is loaded
-     * 
-     * @var array
-     */
-    protected $can;
-    
-    /**
      * Initialization hook method.
      *
      * Use this method to add common initialization code like loading components.
@@ -80,22 +70,12 @@ class AppController extends Controller
          */
         $this->timezone = Configure::read('App.timezone');
 
-        /**
-         * For all controllers except Pages,
-         * checks if user can add, edit, delete, or view
-         * and creates an array with that information
-         */
-        /*
-        if ($this->request->getParam('controller') != '' && $this->request->getParam('controller') != 'Pages') {
-            $user = $this->request->getAttribute('identity');
-            $can['add'] = $user->can('add');
-            $can['edit'] = $user->can('edit');
-            $can['delete'] = $user->can('delete');
-            $can['view'] = $user->can('view');
+        $identity = $this->request->getAttribute('identity');
 
-            $this->set(compact('can'));
+        if ($identity) {
+            $logged_in_user = $identity->getOriginalData();
+            $this->set(compact('logged_in_user'));
         }
-        */
     
     }
 

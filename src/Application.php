@@ -90,9 +90,10 @@ implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderI
         }
 
         // Load more plugins here
-        $this->addPlugin('Authorization');
         $this->addPlugin('Authentication');
+        $this->addPlugin('Authorization');
         $this->addPlugin('ADmad/SocialAuth');
+        EventManager::instance()->on(new SocialAuthListener());
         $this->addPlugin('IdeHelper');
         $this->addPlugin('jeanvaljean/Timezone');
     }

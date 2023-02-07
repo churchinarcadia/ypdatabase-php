@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+
 /**
  * MeetingLocationsNotify Controller
  *
@@ -11,6 +13,59 @@ namespace App\Controller;
  */
 class MeetingLocationsNotifyController extends AppController
 {
+    /**
+     * Identity of logged in user.
+     * 
+     * @var object
+     */
+    private $identity;
+    
+    /**
+     * User permissions
+     * 
+     * @var array
+     */
+    private $permissions;
+    
+    /**
+     * Initialization hook method.
+     *
+     * Use this method to add common initialization code like loading components.
+     *
+     * e.g. `$this->loadComponent('FormProtection');`
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->identity = $this->request->getAttribute('identity');
+
+        if ($this->identity) {
+            if (in_array($this->request->getParam('action'),['index', 'view', 'edit'])) {
+            
+                $can_meetingLocationsNotify = $this->MeetingLocationsNotify->newEmptyEntity();
+                
+                //$this->permissions['address']['add'] = false;
+                $this->permissions['meeting_locations_notify']['add'] = $this->identity->canResult('add', $can_meetingLocationsNotify)->getStatus();
+            }
+        }        
+    }
+
+    /**
+     * Called after the controller action is run, but before the view is rendered. You can use this method
+     * to perform logic or set view variables that are required on every request.
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     * @link https://book.cakephp.org/4/en/controllers.html#request-life-cycle-callbacks
+     */
+    public function beforeRender(EventInterface $event)
+    {
+        parent::beforeRender($event);
+    }
+    
     /**
      * Index method
      *
@@ -34,7 +89,18 @@ class MeetingLocationsNotifyController extends AppController
 
         $meetingLocationsNotify = $this->paginate($meetingLocationsNotify_query);
 
-        $this->set(compact('meetingLocationsNotify'));
+        if ($this->identify) {
+            foreach ($meetingLocationsNotify as $meetingLocationsNotify_entry) {
+                //$this->permissions['meeting_location_notify'][$meetingLocationsNotify_entry->id]['id'] = $meetingLocationsNotify_entry->id;
+                $this->permissions['meeting_location_notify'][$meetingLocationsNotify_entry->id]['can']['view'] = $this->identity->canResult('view', $meetingLocationsNotify_entry)->getStatus();
+                $this->permissions['meeting_location_notify'][$meetingLocationsNotify_entry->id]['can']['edit'] = $this->identity->canResult('edit', $meetingLocationsNotify_entry)->getStatus();
+                $this->permissions['meeting_location_notify'][$meetingLocationsNotify_entry->id]['can']['delete'] = $this->identity->canResult('delete', $meetingLocationsNotify_entry)->getStatus();
+            }
+        }
+
+        $permissions = $this->permissions;
+
+        $this->set(compact('meetingLocationsNotify', 'permissions'));
     }
 
     /**
@@ -57,7 +123,15 @@ class MeetingLocationsNotifyController extends AppController
 
         $this->Authorization->authorize($meetingLocationsNotify);
 
-        $this->set(compact('meetingLocationsNotify'));
+        if ($this->identity) {
+            //$this->permissions['meeting_location_notify'][$meetingLocationsNotify->id]['id'] = $meetingLocationsNotify->id;
+            $this->permissions['meeting_location_notify'][$meetingLocationsNotify->id]['can']['edit'] = $this->identity->canResult('edit', $meetingLocationsNotify)->getStatus();
+            $this->permissions['meeting_location_notify'][$meetingLocationsNotify->id]['can']['delete'] = $this->identity->canResult('delete', $meetingLocationsNotify)->getStatus();
+        }
+
+        $permissions = $this->permissions;
+
+        $this->set(compact('meetingLocationsNotify', 'permissions'));
     }
 
     /**
@@ -109,10 +183,14 @@ class MeetingLocationsNotifyController extends AppController
             }
             $this->Flash->error(__('The meeting locations notify could not be saved. Please, try again.'));
         }
+        if ($this->identity) {
+            $this->permissions['meeting_location_notify'][$meetingLocationsNotify->id]['can']['delete'] = $this->identity->canResult('delete', $meetingLocationsNotify)->getStatus();
+        }
+        $permissions = $this->permissions;
         $meetingLocations = $this->MeetingLocationsNotify->MeetingLocations->find('list', ['limit' => 200])->all();
         $people = $this->MeetingLocationsNotify->People->find('list', ['limit' => 200])->all();
         $users = $this->MeetingLocationsNotify->MeetingLocationsNotifyCreators->find('list', ['limit' => 200])->all();
-        $this->set(compact('meetingLocationsNotify', 'meetingLocations', 'people', 'users'));
+        $this->set(compact('meetingLocationsNotify', 'permissions', 'meetingLocations', 'people', 'users'));
     }
 
     /**
