@@ -5,7 +5,11 @@
  */
 ?>
 <div class="meetingPeople index content">
-    <?= $this->Html->link(__('New Meeting Person'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?php
+        if ($permissions['meeting_people']['add']) {
+            echo $this->Html->link(__('New Meeting Person'), ['action' => 'add'], ['class' => 'button float-right']);
+        }
+    ?>
     <h3><?= __('Meeting People') ?></h3>
     <div class="table-responsive">
         <table>
@@ -14,13 +18,21 @@
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('meeting_id') ?></th>
                     <th><?= $this->Paginator->sort('person_id') ?></th>
-                    <?php //TODO check for admin usertype ?>
-                    <th><?= $this->Paginator->sort('creator') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modifier') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <?php //TODO check for steward usetype or higher ?>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <?php
+                        if ($logged_in_user->user_type_id == 1) {
+                            ?>
+                            <th><?= $this->Paginator->sort('creator') ?></th>
+                            <th><?= $this->Paginator->sort('created') ?></th>
+                            <th><?= $this->Paginator->sort('modifier') ?></th>
+                            <th><?= $this->Paginator->sort('modified') ?></th>
+                            <?php
+                        }
+                        if (in_array($logged_in_user->user_type_id, [1, 2, 3])) {
+                            ?>
+                            <th class="actions"><?= __('Actions') ?></th>
+                            <?php
+                        }
+                    ?>
                 </tr>
             </thead>
             <tbody>

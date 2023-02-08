@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+
 /**
  * MeetingPeople Controller
  *
@@ -11,6 +13,59 @@ namespace App\Controller;
  */
 class MeetingPeopleController extends AppController
 {
+    /**
+     * Identity of logged in user.
+     * 
+     * @var object
+     */
+    private $identity;
+    
+    /**
+     * User permissions
+     * 
+     * @var array
+     */
+    private $permissions;
+    
+    /**
+     * Initialization hook method.
+     *
+     * Use this method to add common initialization code like loading components.
+     *
+     * e.g. `$this->loadComponent('FormProtection');`
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->identity = $this->request->getAttribute('identity');
+
+        if ($this->identity) {
+            if (in_array($this->request->getParam('action'),['index', 'view', 'edit'])) {
+            
+                $can_meetingPeople = $this->MeetingPeople->newEmptyEntity();
+                
+                //$this->permissions['address']['add'] = false;
+                $this->permissions['meeting_people']['add'] = $this->identity->canResult('add', $can_meetingPeople)->getStatus();
+            }
+        }        
+    }
+
+    /**
+     * Called after the controller action is run, but before the view is rendered. You can use this method
+     * to perform logic or set view variables that are required on every request.
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     * @link https://book.cakephp.org/4/en/controllers.html#request-life-cycle-callbacks
+     */
+    public function beforeRender(EventInterface $event)
+    {
+        parent::beforeRender($event);
+    }
+    
     /**
      * Index method
      *
@@ -34,7 +89,18 @@ class MeetingPeopleController extends AppController
 
         $meetingPeople = $this->paginate($meetingPeople_query);
 
-        $this->set(compact('meetingPeople'));
+        if ($this->identity) {
+            foreach ($meetingPeople as $meetingPerson) {
+                //$this->permissions['meeting_person'][$meetingPerson->id]['id'] = $meetingPerson->id;
+                $this->permissions['meeting_person'][$meetingPerson->id]['can']['view'] = $this->identity->canResult('view', $meetingPerson)->getStatus();
+                $this->permissions['meeting_person'][$meetingPerson->id]['can']['edit'] = $this->identity->canResult('edit', $meetingPerson)->getStatus();
+                $this->permissions['meeting_person'][$meetingPerson->id]['can']['delete'] = $this->identity->canResult('delete', $meetingPerson)->getStatus();
+            }
+        }
+        
+        $permissions = $this->permissions;
+
+        $this->set(compact('meetingPeople', 'permissions'));
     }
 
     /**
@@ -57,7 +123,15 @@ class MeetingPeopleController extends AppController
 
         $this->Authorization->authorize($meetingPerson);
 
-        $this->set(compact('meetingPerson'));
+        if ($this->identity) {
+            //$this->permissions['meeting_person'][$meetingPerson->id]['id'] = $meetingPerson->id;
+            $this->permissions['meeting_person'][$meetingPerson->id]['can']['edit'] = $this->identity->canResult('edit', $meetingPerson)->getStatus();
+            $this->permissions['meeting_person'][$meetingPerson->id]['can']['delete'] = $this->identity->canResult('delete', $meetingPerson)->getStatus();
+        }
+
+        $permissions = $this->permissions;
+
+        $this->set(compact('meetingPerson', 'permissions'));
     }
 
     /**
@@ -109,10 +183,14 @@ class MeetingPeopleController extends AppController
             }
             $this->Flash->error(__('The meeting person could not be saved. Please, try again.'));
         }
+        if ($this->identity) {
+            $this->permissions['meeting_person'][$meetingPerson->id]['can']['delete'] = $this->identity->canResult('delete', $meetingPerson)->getStatus();
+        }
+        $permissions = $this->permissions;
         $meetings = $this->MeetingPeople->Meetings->find('list', ['limit' => 200])->all();
         $people = $this->MeetingPeople->People->find('list', ['limit' => 200])->all();
         $user = $this->MeetingPeople->MeetingPeopleCreators->find('list', ['limit' => 200])->all();
-        $this->set(compact('meetingPerson', 'meetings', 'people', 'user'));
+        $this->set(compact('meetingPerson', 'permissions', 'meetings', 'people', 'user'));
     }
 
     /**
